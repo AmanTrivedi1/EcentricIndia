@@ -38,16 +38,21 @@ exports.fetchAllProducts = async (req, res) => {
   // filter = {"category":["smartphone","laptops"]}
   // sort = {_sort:"price",_order="desc"}
   // pagination = {_page:1,_limit=10}
+  console.log("query", req.query.search);
   let condition = {};
   if (!req.query.admin) {
     condition.deleted = { $ne: true };
   }
 
   let query = Product.find(condition);
-  console.log("adsad", query);
   let totalProductsQuery = Product.find(condition);
 
-  console.log(req.query.category);
+  if (req.query.search) {
+    query = query.find({ title: new RegExp(req.query.search, "i") });
+    totalProductsQuery = totalProductsQuery.find({
+      title: new RegExp(req.query.search, "i"),
+    });
+  }
 
   if (req.query.category) {
     query = query.find({ category: { $in: req.query.category.split(",") } });
@@ -66,7 +71,6 @@ exports.fetchAllProducts = async (req, res) => {
   }
 
   const totalDocs = await totalProductsQuery.count().exec();
-  console.log({ totalDocs });
 
   if (req.query._page && req.query._limit) {
     const pageSize = req.query._limit;
@@ -76,7 +80,6 @@ exports.fetchAllProducts = async (req, res) => {
 
   try {
     const docs = await query.exec();
-    console.log("asdasda", docs);
     res.set("X-Total-Count", totalDocs);
     res.status(200).json(docs);
   } catch (err) {
@@ -84,9 +87,20 @@ exports.fetchAllProducts = async (req, res) => {
   }
 };
 
+exports.fetchProductsByCategory = async (req, res) => {
+  console.log("nolmkl", req.query);
+  try {
+    const product = await Product.find({
+      $and: [{ category: req.query.category }, { _id: { $ne: req.query.id } }],
+    });
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
 exports.fetchProductById = async (req, res) => {
   const { id } = req.params;
-
   try {
     const product = await Product.findById(id);
     res.status(200).json(product);

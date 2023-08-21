@@ -49,7 +49,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductList() {
+export default function ProductList({ searchData }) {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const brands = useSelector(selectBrands);
@@ -107,8 +107,10 @@ export default function ProductList() {
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-  }, [dispatch, filter, sort, page]);
+    dispatch(
+      fetchProductsByFiltersAsync({ filter, sort, pagination, searchData })
+    );
+  }, [dispatch, filter, sort, page, searchData]);
 
   useEffect(() => {
     setPage(1);

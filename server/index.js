@@ -19,6 +19,7 @@ const usersRouter = require("./routes/Users");
 const authRouter = require("./routes/Auth");
 const cartRouter = require("./routes/Cart");
 const ordersRouter = require("./routes/Order");
+const dashboardRouter = require("./routes/Dashboard");
 const { User } = require("./model/User");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require("path");
@@ -99,6 +100,7 @@ server.use("/users", isAuth(), usersRouter.router);
 server.use("/auth", authRouter.router);
 server.use("/cart", isAuth(), cartRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
+server.use("/dashboard", dashboardRouter.router);
 
 // this line we add to make react router work in case of other routes doesnt match
 server.get("*", (req, res) =>

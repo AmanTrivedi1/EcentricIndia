@@ -4,6 +4,7 @@ const {
   fetchAllProducts,
   fetchProductById,
   updateProduct,
+  fetchProductsByCategory,
 } = require("../controller/Product");
 const { Product } = require("../model/Product");
 
@@ -12,6 +13,7 @@ const router = express.Router();
 router
   .post("/", createProduct)
   .get("/", fetchAllProducts)
+  .get("/category/", fetchProductsByCategory)
   .get("/:id", fetchProductById)
   .patch("/:id", updateProduct);
 // .get('/update/test',async(req,res)=>{

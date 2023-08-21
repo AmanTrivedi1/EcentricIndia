@@ -6,6 +6,8 @@ import {
   fetchProductByIdAsync,
   selectProductById,
   selectProductListStatus,
+  fetchProductByCategoryAsync,
+  selectProductByCategory,
 } from "../productSlice";
 import { useParams } from "react-router-dom";
 import { addToCartAsync, selectItems } from "../../cart/cartSlice";
@@ -23,8 +25,10 @@ export default function ProductDetail() {
   const user = useSelector(selectLoggedInUser);
   const items = useSelector(selectItems);
   const product = useSelector(selectProductById);
+  const similarCategory = useSelector(selectProductByCategory);
   const dispatch = useDispatch();
   const params = useParams();
+  console.log("param ", params);
   const alert = useAlert();
   const status = useSelector(selectProductListStatus);
 
@@ -47,10 +51,19 @@ export default function ProductDetail() {
       alert.error("Item Already added");
     }
   };
-
+  console.log("sjdkbfjadmqorvj ejve jvetj rvk vrtgor,", similarCategory);
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
   }, [dispatch, params.id]);
+
+  useEffect(() => {
+    if (product) {
+      console.log("mpommomom", product.id);
+      const category = product?.category;
+      const id = product?.id;
+      dispatch(fetchProductByCategoryAsync({ category, id }));
+    }
+  }, [dispatch, product]);
 
   return (
     <div className="bg-white">
@@ -309,7 +322,7 @@ export default function ProductDetail() {
                   </div>
                 )}
 
-                {user &&
+                {user && (
                   <button
                     onClick={handleCart}
                     type="submit"
@@ -317,7 +330,7 @@ export default function ProductDetail() {
                   >
                     Add to Cart
                   </button>
-                }
+                )}
               </form>
             </div>
 

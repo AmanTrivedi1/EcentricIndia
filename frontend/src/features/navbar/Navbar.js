@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -26,9 +26,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavBar({ children }) {
+function NavBar(props) {
+  const [searchProduct, setSearchProduct] = useState("");
   const items = useSelector(selectItems);
   const userInfo = useSelector(selectUserInfo);
+
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    props.handleSearch(e.target.value);
+    setSearchProduct(e.target.value);
+  };
 
   return (
     <>
@@ -84,6 +91,13 @@ function NavBar({ children }) {
                         </div>
                       </div>
                     )}
+                  </div>
+                  <div>
+                    <input
+                      type="search"
+                      value={searchProduct}
+                      onChange={handleSearch}
+                    />
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
@@ -274,11 +288,11 @@ function NavBar({ children }) {
             </h1>
           </div>
         </header>
-        <main>
+        {/* <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {children}
           </div>
-        </main>
+        </main> */}
       </div>
     </>
   );

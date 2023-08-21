@@ -9,13 +9,14 @@ import {
   updateProductAsync,
 } from "../../product/productSlice";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from "../../common/Modal";
 import { useAlert } from "react-alert";
 import { computeHeadingLevel } from "@testing-library/react";
 
 function ProductForm() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -30,38 +31,6 @@ function ProductForm() {
   const selectedProduct = useSelector(selectProductById);
   const [openModal, setOpenModal] = useState(null);
   const alert = useAlert();
-
-  const colors = [
-    {
-      name: "White",
-      class: "bg-white",
-      selectedClass: "ring-gray-400",
-      id: "white",
-    },
-    {
-      name: "Gray",
-      class: "bg-gray-200",
-      selectedClass: "ring-gray-400",
-      id: "gray",
-    },
-    {
-      name: "Black",
-      class: "bg-gray-900",
-      selectedClass: "ring-gray-900",
-      id: "black",
-    },
-  ];
-
-  const sizes = [
-    { name: "XXS", inStock: true, id: "xxs" },
-    { name: "XS", inStock: true, id: "xs" },
-    { name: "S", inStock: true, id: "s" },
-    { name: "M", inStock: true, id: "m" },
-    { name: "L", inStock: true, id: "l" },
-    { name: "XL", inStock: true, id: "xl" },
-    { name: "2XL", inStock: true, id: "2xl" },
-    { name: "3XL", inStock: true, id: "3xl" },
-  ];
 
   useEffect(() => {
     if (params.id) {
@@ -88,14 +57,8 @@ function ProductForm() {
       setValue("highlight2", selectedProduct.highlights[1]);
       setValue("highlight3", selectedProduct.highlights[2]);
       setValue("highlight4", selectedProduct.highlights[3]);
-      setValue(
-        "sizes",
-        selectedProduct.sizes.map((size) => size.id)
-      );
-      setValue(
-        "colors",
-        selectedProduct.colors.map((color) => color.id)
-      );
+      setValue("size", selectedProduct.size);
+      setValue("color", selectedProduct.color);
     }
   }, [selectedProduct, params.id, setValue]);
 
@@ -110,7 +73,7 @@ function ProductForm() {
       <form
         noValidate
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          // console.log("formdata", data);
           const product = { ...data };
           product.images = [
             product.image1,
@@ -125,37 +88,39 @@ function ProductForm() {
             product.highlight4,
           ];
           product.rating = 0;
-          if (product.colors) {
-            product.colors = product.colors.map((color) =>
-              colors.find((clr) => clr.id === color)
-            );
-          }
-          if (product.sizes) {
-            product.sizes = product.sizes.map((size) =>
-              sizes.find((sz) => sz.id === size)
-            );
-          }
-
+          // product.colors = product.colors;
+          // if (product.colors) {
+          //   product.colors = product.colors.map((color) =>
+          //     colors.find((clr) => clr.id === color)
+          //   );
+          // }
+          // if (product.sizes) {
+          //   product.sizes = product.sizes.map((size) =>
+          //     sizes.find((sz) => sz.id === size)
+          //   );
+          // }
+          // product.size = product.size;
           delete product["image1"];
           delete product["image2"];
           delete product["image3"];
           product.price = +product.price;
           product.stock = +product.stock;
           product.discountPercentage = +product.discountPercentage;
-          console.log(product);
+          // console.log("update hua kya", product);
           if (params.id) {
             product.id = params.id;
             product.rating = selectedProduct.rating || 0;
             dispatch(updateProductAsync(product));
-            console.log("Product update", product);
+            // console.log("Product update", product);
             alert.success("Product Updated");
-
-            // reset();
+            reset();
+            navigate("/");
           } else {
             dispatch(createProductAsync(product));
-            console.log("Product new", product);
+            // console.log("Product new", product);
             alert.success("Product Created");
-            // reset();
+            reset();
+            navigate("/");
           }
         })}
       >
@@ -249,7 +214,7 @@ function ProductForm() {
                 </div>
               </div>
 
-              <div className="col-span-full">
+              {/* <div className="col-span-full">
                 <label
                   htmlFor="colors"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -269,9 +234,29 @@ function ProductForm() {
                     </>
                   ))}
                 </div>
+              </div> */}
+              <div className="col-span-full">
+                <label
+                  htmlFor="color"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Color
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
+                    <input
+                      type="text"
+                      {...register("color", {
+                        required: "color is required",
+                      })}
+                      id="color"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="col-span-full">
+              {/* <div className="col-span-full">
                 <label
                   htmlFor="sizes"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -290,6 +275,26 @@ function ProductForm() {
                       {size.name}
                     </>
                   ))}
+                </div>
+              </div> */}
+              <div className="col-span-full">
+                <label
+                  htmlFor="size"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Size (with unit)
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
+                    <input
+                      type="text"
+                      {...register("size", {
+                        required: "brand is required",
+                      })}
+                      id="size"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -550,86 +555,6 @@ function ProductForm() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Extra{" "}
-            </h2>
-
-            <div className="mt-10 space-y-10">
-              <fieldset>
-                <legend className="text-sm font-semibold leading-6 text-gray-900">
-                  By Email
-                </legend>
-                <div className="mt-6 space-y-6">
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="comments"
-                        name="comments"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="comments"
-                        className="font-medium text-gray-900"
-                      >
-                        Comments
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when someones posts a comment on a posting.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="candidates"
-                        name="candidates"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="candidates"
-                        className="font-medium text-gray-900"
-                      >
-                        Candidates
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when a candidate applies for a job.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="offers"
-                        name="offers"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label
-                        htmlFor="offers"
-                        className="font-medium text-gray-900"
-                      >
-                        Offers
-                      </label>
-                      <p className="text-gray-500">
-                        Get notified when a candidate accepts or rejects an
-                        offer.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
             </div>
           </div>
         </div>

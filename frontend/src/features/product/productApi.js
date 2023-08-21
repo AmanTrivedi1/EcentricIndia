@@ -14,6 +14,17 @@ export function fetchProductById(id) {
   });
 }
 
+export function fetchProductsByCategory(category, id) {
+  return new Promise(async (resolve) => {
+    console.log("aaaya yaar", category, id);
+    let queryString = "";
+    queryString += `category=${category}&id=${id}`;
+    const response = await fetch("/products/category?" + queryString);
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+
 export function createProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch("/products/", {
@@ -38,12 +49,22 @@ export function updateProduct(update) {
   });
 }
 
-export function fetchProductsByFilters(filter, sort, pagination, admin) {
+export function fetchProductsByFilters(
+  filter,
+  sort,
+  pagination,
+  searchData,
+  admin
+) {
   // filter = {"category":["smartphone","laptops"]}
   // sort = {_sort:"price",_order="desc"}
   // pagination = {_page:1,_limit=10}
-
+  // console.log("aayana", searchData);
   let queryString = "";
+
+  if (searchData) {
+    queryString += `search=${searchData}&`;
+  }
   for (let key in filter) {
     const categoryValues = filter[key];
     if (categoryValues.length) {

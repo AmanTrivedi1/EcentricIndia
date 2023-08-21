@@ -7,7 +7,8 @@ import {
   fetchProductById,
   createProduct,
   updateProduct,
-} from "./productAPI";
+  fetchProductsByCategory,
+} from "./productApi";
 
 const initialState = {
   products: [],
@@ -16,6 +17,7 @@ const initialState = {
   status: "idle",
   totalItems: 0,
   selectedProduct: null,
+  similarCategory: [],
 };
 export const fetchProductByIdAsync = createAsyncThunk(
   "product/fetchProductById",
@@ -26,13 +28,24 @@ export const fetchProductByIdAsync = createAsyncThunk(
   }
 );
 
+export const fetchProductByCategoryAsync = createAsyncThunk(
+  "product/fetchProductByCategory",
+  async ({ category, id }) => {
+    console.log("dekho yaar", category, id);
+    const response = await fetchProductsByCategory(category, id);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   "product/fetchProductsByFilters",
-  async ({ filter, sort, pagination, admin }) => {
+  async ({ filter, sort, pagination, searchData, admin }) => {
     const response = await fetchProductsByFilters(
       filter,
       sort,
       pagination,
+      searchData,
       admin
     );
     // The value we return becomes the `fulfilled` action payload
@@ -112,6 +125,13 @@ export const productSlice = createSlice({
         state.status = "idle";
         state.selectedProduct = action.payload;
       })
+      .addCase(fetchProductByCategoryAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductByCategoryAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.similarCategory = action.payload;
+      })
       .addCase(createProductAsync.pending, (state) => {
         state.status = "loading";
       })
@@ -140,7 +160,7 @@ export const selectBrands = (state) => state.product.brands;
 export const selectCategories = (state) => state.product.categories;
 export const selectProductById = (state) => state.product.selectedProduct;
 export const selectProductListStatus = (state) => state.product.status;
-
+export const selectProductByCategory = (state) => state.product.similarCategory;
 export const selectTotalItems = (state) => state.product.totalItems;
 
 export default productSlice.reducer;
