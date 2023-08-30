@@ -6,8 +6,6 @@ export function fetchLoggedInUserOrders() {
   }
   );
 }
-
-
 export function fetchLoggedInUser() {
   return new Promise(async (resolve) =>{
     const response = await fetch('/users/own') 
@@ -16,7 +14,6 @@ export function fetchLoggedInUser() {
   }
   );
 }
-
 export function updateUser(update) {
   return new Promise(async (resolve) => {
     const response = await fetch('/users/'+update.id, {

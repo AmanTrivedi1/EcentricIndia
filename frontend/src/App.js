@@ -1,16 +1,16 @@
-import { Counter } from "./features/counter/Counter";
 import "./App.css";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-
-import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
+import Filter from "./pages/Filters";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Protected from "./features/auth/components/Protected";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   checkAuthAsync,
   selectLoggedInUser,
@@ -18,6 +18,7 @@ import {
 } from "./features/auth/authSlice";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import PageNotFound from "./pages/404";
+import ContactPage from "./pages/ContactPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
@@ -42,12 +43,9 @@ const options = {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      // <Protected>
-      <Home></Home>
-      // {/* </Protected> */}
-    ),
+    element: <Home></Home>,
   },
+
   {
     path: "/admin",
     element: (
@@ -57,8 +55,16 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/contact",
+    element: <ContactPage />,
+  },
+  {
     path: "/login",
     element: <LoginPage></LoginPage>,
+  },
+  {
+    path: "/filters",
+    element: <Filter></Filter>,
   },
   {
     path: "/signup",

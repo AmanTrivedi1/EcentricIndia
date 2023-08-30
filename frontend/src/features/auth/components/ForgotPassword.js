@@ -1,12 +1,11 @@
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import {useDispatch, useSelector} from 'react-redux';
-import { resetPasswordRequestAsync, selectMailSent } from '../authSlice';
-
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPasswordRequestAsync, selectMailSent } from "../authSlice";
+import TypewriterComponent from "typewriter-effect";
 export default function ForgotPassword() {
-
- const mailSent = useSelector(selectMailSent);
-  const dispatch = useDispatch()
+  const mailSent = useSelector(selectMailSent);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -17,25 +16,22 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="/ecommerce.png"
-            alt="Your Company"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Enter email to reset password
+      <div className="flex h-screen items-center justify-center">
+        <div className=" border p-10 rounded-xl border-black/10  sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className=" text-2xl font-bold font-Poppins sm:block  text-black  leading-normal text-center mb-6 ">
+            <TypewriterComponent
+              options={{
+                strings: ["Ecentric India", "Fragrences", "Natural Oils"],
+                autoStart: true,
+                loop: true,
+              }}
+            />
           </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
               console.log(data);
-              dispatch(resetPasswordRequestAsync(data.email))
-              
+              dispatch(resetPasswordRequestAsync(data.email));
             })}
             className="space-y-6"
           >
@@ -49,40 +45,37 @@ export default function ForgotPassword() {
               <div className="mt-2">
                 <input
                   id="email"
-                  {...register('email', {
-                    required: 'email is required',
+                  {...register("email", {
+                    required: "email is required",
                     pattern: {
                       value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
-                      message: 'email not valid',
+                      message: "email not valid",
                     },
                   })}
                   type="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className=" w-full border-2 border-gray-300 bg-gray-50    py-1.5 pl-1 rounded-lg text-gray-900 focus:ring-black/60 focus:ring-2 sm:text-sm sm:leading-6 "
                 />
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
-                {mailSent && (
-                  <p className="text-green-500">Mail Sent</p>
-                )}
+                {mailSent && <p className="text-green-500">Mail Sent</p>}
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Send Email
               </button>
             </div>
           </form>
-
           <p className="mt-10 text-center text-sm text-gray-500">
-            Send me back to{' '}
+            Send me back to{" "}
             <Link
               to="/login"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-black opacity-100 hover:opacity-80"
             >
               Login
             </Link>

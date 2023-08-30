@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { ITEMS_PER_PAGE } from '../../../app/constants';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllOrdersAsync,
   selectOrders,
   selectTotalOrders,
   updateOrderAsync,
-} from '../../order/orderSlice';
+} from "../../order/orderSlice";
 import {
   PencilIcon,
   EyeIcon,
   ArrowUpIcon,
   ArrowDownIcon,
-} from '@heroicons/react/24/outline';
-import Pagination from '../../common/Pagination';
+} from "@heroicons/react/24/outline";
+import Pagination from "../../common/Pagination";
 
 function AdminOrders() {
   const [page, setPage] = useState(1);
@@ -27,7 +27,7 @@ function AdminOrders() {
     setEditableOrderId(order.id);
   };
   const handleShow = () => {
-    console.log('handleShow');
+    console.log("handleShow");
   };
 
   const handleOrderStatus = (e, order) => {
@@ -54,18 +54,18 @@ function AdminOrders() {
 
   const chooseColor = (status) => {
     switch (status) {
-      case 'pending':
-        return 'bg-purple-200 text-purple-600';
-      case 'dispatched':
-        return 'bg-yellow-200 text-yellow-600';
-      case 'delivered':
-        return 'bg-green-200 text-green-600';
-      case 'received':
-        return 'bg-green-200 text-green-600';
-      case 'cancelled':
-        return 'bg-red-200 text-red-600';
+      case "pending":
+        return "bg-purple-200 text-purple-600";
+      case "dispatched":
+        return "bg-yellow-200 text-yellow-600";
+      case "delivered":
+        return "bg-green-200 text-green-600";
+      case "received":
+        return "bg-green-200 text-green-600";
+      case "cancelled":
+        return "bg-red-200 text-red-600";
       default:
-        return 'bg-purple-200 text-purple-600';
+        return "bg-purple-200 text-purple-600";
     }
   };
 
@@ -75,10 +75,10 @@ function AdminOrders() {
   }, [dispatch, page, sort]);
 
   return (
-    <div className="overflow-x-auto">
-      <div className="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
+    <div className="overflow-x-auto px-10 rounded-md overflow-auto mt-10">
+      <div className="bg-gray-100  flex items-center justify-center font-sans overflow-hidden">
         <div className="w-full">
-          <div className="bg-white shadow-md rounded my-6">
+          <div className=" shadow-md rounded my-6">
             <table className="w-full table-auto">
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -86,14 +86,14 @@ function AdminOrders() {
                     className="py-3 px-0 text-left cursor-pointer"
                     onClick={(e) =>
                       handleSort({
-                        sort: 'id',
-                        order: sort?._order === 'asc' ? 'desc' : 'asc',
+                        sort: "id",
+                        order: sort?._order === "asc" ? "desc" : "asc",
                       })
                     }
                   >
-                    Order#{' '}
-                    {sort._sort === 'id' &&
-                      (sort._order === 'asc' ? (
+                    Order Id:{" "}
+                    {sort._sort === "id" &&
+                      (sort._order === "asc" ? (
                         <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
                       ) : (
                         <ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>
@@ -104,14 +104,14 @@ function AdminOrders() {
                     className="py-3 px-0 text-left cursor-pointer"
                     onClick={(e) =>
                       handleSort({
-                        sort: 'totalAmount',
-                        order: sort?._order === 'asc' ? 'desc' : 'asc',
+                        sort: "totalAmount",
+                        order: sort?._order === "asc" ? "desc" : "asc",
                       })
                     }
                   >
-                    Total Amount{' '}
-                    {sort._sort === 'totalAmount' &&
-                      (sort._order === 'asc' ? (
+                    Total Amount{" "}
+                    {sort._sort === "totalAmount" &&
+                      (sort._order === "asc" ? (
                         <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
                       ) : (
                         <ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>
@@ -125,14 +125,14 @@ function AdminOrders() {
                     className="py-3 px-0 text-left cursor-pointer"
                     onClick={(e) =>
                       handleSort({
-                        sort: 'createdAt',
-                        order: sort?._order === 'asc' ? 'desc' : 'asc',
+                        sort: "createdAt",
+                        order: sort?._order === "asc" ? "desc" : "asc",
                       })
                     }
                   >
-                    Order Time{' '}
-                    {sort._sort === 'createdAt' &&
-                      (sort._order === 'asc' ? (
+                    Order Time{" "}
+                    {sort._sort === "createdAt" &&
+                      (sort._order === "asc" ? (
                         <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
                       ) : (
                         <ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>
@@ -142,14 +142,14 @@ function AdminOrders() {
                     className="py-3 px-0 text-left cursor-pointer"
                     onClick={(e) =>
                       handleSort({
-                        sort: 'updatedAt',
-                        order: sort?._order === 'asc' ? 'desc' : 'asc',
+                        sort: "updatedAt",
+                        order: sort?._order === "asc" ? "desc" : "asc",
                       })
                     }
                   >
-                    Last Updated{' '}
-                    {sort._sort === 'updatedAt' &&
-                      (sort._order === 'asc' ? (
+                    Last Updated{" "}
+                    {sort._sort === "updatedAt" &&
+                      (sort._order === "asc" ? (
                         <ArrowUpIcon className="w-4 h-4 inline"></ArrowUpIcon>
                       ) : (
                         <ArrowDownIcon className="w-4 h-4 inline"></ArrowDownIcon>
@@ -250,14 +250,17 @@ function AdminOrders() {
 
                     <td className="py-3 px-0 text-center">
                       <div className="flex items-center justify-center">
-                        {order.createdAt? new Date(order.createdAt).toLocaleString():null }
+                        {order.createdAt
+                          ? new Date(order.createdAt).toLocaleString()
+                          : null}
                       </div>
                     </td>
 
-
                     <td className="py-3 px-0 text-center">
                       <div className="flex items-center justify-center">
-                      {order.updatedAt? new Date(order.updatedAt).toLocaleString():null }
+                        {order.updatedAt
+                          ? new Date(order.updatedAt).toLocaleString()
+                          : null}
                       </div>
                     </td>
 

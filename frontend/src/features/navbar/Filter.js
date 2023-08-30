@@ -7,7 +7,6 @@ import {
   AiOutlineUser,
   AiOutlineClose,
 } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import { selectUserInfo } from "../user/userSlice";
 import { BsChatDots } from "react-icons/bs";
 import { TbPrompt } from "react-icons/tb";
@@ -34,17 +33,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function NavBar(props) {
+function Filter(props) {
   const [searchProduct, setSearchProduct] = useState("");
   const items = useSelector(selectItems);
   const userInfo = useSelector(selectUserInfo);
   const [show, setShow] = useState(null);
   const [profile, setProfile] = useState(false);
-  const navigate = useNavigate();
-  function handleClick() {
-    navigate("/filters");
-  }
-
   const handleSearch = (e) => {
     console.log(e.target.value);
     props.handleSearch(e.target.value);
@@ -53,9 +47,9 @@ function NavBar(props) {
 
   return (
     <>
-      <div className=" z-50  h-9">
+      <div className=" ">
         {/* Code block starts */}
-        <nav className="  xl:block hidden">
+        <nav className="   xl:block hidden">
           <div className="">
             <div className="flex items-center justify-between mx-20">
               <div className="flex w-full sm:w-auto items-center sm:items-stretch justify-end sm:justify-between">
@@ -77,10 +71,8 @@ function NavBar(props) {
                       placeholder="Search "
                       type="search"
                       value={searchProduct}
-                      onClick={handleClick}
-                      id="simple-search"
-                      class="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black block w-full pl-10 p-2.5 "
-                      required
+                      onChange={handleSearch}
+                      className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5 "
                     />
                   </div>
                 </form>
@@ -133,7 +125,7 @@ function NavBar(props) {
                       onClick={() => setProfile(!profile)}
                     >
                       {profile && (
-                        <ul className="p-2 w-40 border-r z-30 bg-white absolute rounded right-0 shadow top-0 mt-16 ">
+                        <ul className="p-2 w-40 border-r z-30  absolute rounded right-0 shadow top-0 mt-16 ">
                           <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
                             <div className="flex items-center">
                               <AiOutlineLogin />
@@ -172,7 +164,7 @@ function NavBar(props) {
           </div>
         </nav>
         <nav>
-          <div className="py-4 px-6 w-full flex xl:hidden sticky justify-between items-center bg-white  top-0 z-40">
+          <div className="py-4 px-6 w-full flex xl:hidden sticky justify-between items-center   top-0 z-40">
             <div className="w-full">
               <h1>Ecentric India</h1>
             </div>
@@ -218,7 +210,7 @@ function NavBar(props) {
               className="bg-gray-800 opacity-50 w-full h-full"
               onClick={() => setShow(!show)}
             />
-            <div className="w-64 z-40  overflow-y-auto  top-[-56px] absolute bg-white shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
+            <div className="w-64 z-40  overflow-y-auto  top-[-56px] absolute  shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
               <div className="px-6 h-full">
                 <div className="flex flex-col justify-between h-full w-full">
                   <div>
@@ -247,7 +239,7 @@ function NavBar(props) {
                           </div>
                         </li>
                       </Link>
-                      <Link to="/filters" className="cursor-pointer">
+                      <Link className="cursor-pointer">
                         <li className="text-gray-800 pt-6">
                           <div className="flex items-center hover:text-dark translate-x-0  ">
                             <div className="flex justify-center items-center gap-x-4">
@@ -320,7 +312,7 @@ function NavBar(props) {
   );
 }
 
-export default NavBar;
+export default Filter;
 
 // import React, { useState } from "react";
 // import { Link } from "react-router-dom";

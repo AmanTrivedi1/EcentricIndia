@@ -1,5 +1,5 @@
-import React, { useState, Fragment, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, Fragment, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   fetchBrandsAsync,
   fetchCategoriesAsync,
@@ -8,32 +8,42 @@ import {
   selectBrands,
   selectCategories,
   selectTotalItems,
-} from '../../product/productSlice';
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+} from "../../product/productSlice";
+import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   StarIcon,
-} from '@heroicons/react/20/solid';
-import { Link } from 'react-router-dom';
+} from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 import {
   ChevronDownIcon,
   FunnelIcon,
   MinusIcon,
   PlusIcon,
   Squares2X2Icon,
-} from '@heroicons/react/20/solid';
-import { ITEMS_PER_PAGE } from '../../../app/constants';
+} from "@heroicons/react/20/solid";
+import { ITEMS_PER_PAGE } from "../../../app/constants";
 
 const sortOptions = [
-  { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
-  { name: 'Price: Low to High', sort: 'discountPrice', order: 'asc', current: false },
-  { name: 'Price: High to Low', sort: 'discountPrice', order: 'desc', current: false },
+  { name: "Best Rating", sort: "rating", order: "desc", current: false },
+  {
+    name: "Price: Low to High",
+    sort: "discountPrice",
+    order: "asc",
+    current: false,
+  },
+  {
+    name: "Price: High to Low",
+    sort: "discountPrice",
+    order: "desc",
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function AdminProductList() {
@@ -44,13 +54,13 @@ export default function AdminProductList() {
   const totalItems = useSelector(selectTotalItems);
   const filters = [
     {
-      id: 'category',
-      name: 'Category',
+      id: "category",
+      name: "Category",
       options: categories,
     },
     {
-      id: 'brand',
-      name: 'Brands',
+      id: "brand",
+      name: "Brands",
       options: brands,
     },
   ];
@@ -92,7 +102,9 @@ export default function AdminProductList() {
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination, admin:true }));
+    dispatch(
+      fetchProductsByFiltersAsync({ filter, sort, pagination, admin: true })
+    );
   }, [dispatch, filter, sort, page]);
 
   useEffect(() => {
@@ -105,7 +117,7 @@ export default function AdminProductList() {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="">
       <div>
         <MobileFilter
           handleFilter={handleFilter}
@@ -115,9 +127,9 @@ export default function AdminProductList() {
         ></MobileFilter>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              All Products
+          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 sm:pt-16 pt-8">
+            <h1 className="md:text-4xl  sm:text-2xl text-base font-bold tracking-tight text-gray-900">
+              Admin Product Section
             </h1>
 
             <div className="flex items-center">
@@ -141,7 +153,7 @@ export default function AdminProductList() {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md  shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
@@ -150,10 +162,10 @@ export default function AdminProductList() {
                               onClick={(e) => handleSort(e, option)}
                               className={classNames(
                                 option.current
-                                  ? 'font-medium text-gray-900'
-                                  : 'text-gray-500',
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm'
+                                  ? "font-medium text-gray-900"
+                                  : "text-gray-500",
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm"
                               )}
                             >
                               {option.name}
@@ -168,14 +180,7 @@ export default function AdminProductList() {
 
               <button
                 type="button"
-                className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
-              >
-                <span className="sr-only">View grid</span>
-                <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                className="-m-2 cursor-pointer ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
                 onClick={() => setMobileFiltersOpen(true)}
               >
                 <span className="sr-only">Filters</span>
@@ -200,7 +205,7 @@ export default function AdminProductList() {
                 <div>
                   <Link
                     to="/admin/product-form"
-                    className="rounded-md mx-10 my-5 bg-green-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md border md:mx-8 mx-4 my-5  px-3 py-2 text-sm font-semibold  shadow-sm  text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 hover:border-black  focus-visible:outline-black/40"
                   >
                     Add New Product
                   </Link>
@@ -259,12 +264,12 @@ function MobileFilter({
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+            <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto  py-4 pb-12 shadow-xl">
               <div className="flex items-center justify-between px-4">
-                <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                <h2 className="text-sm font-medium text-gray-900">Filters</h2>
                 <button
                   type="button"
-                  className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                  className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md  p-2 text-gray-400"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
                   <span className="sr-only">Close menu</span>
@@ -283,7 +288,7 @@ function MobileFilter({
                     {({ open }) => (
                       <>
                         <h3 className="-mx-2 -my-3 flow-root">
-                          <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                          <Disclosure.Button className="flex w-full items-center justify-between  px-2 py-3 text-gray-400 hover:text-gray-500">
                             <span className="font-medium text-gray-900">
                               {section.name}
                             </span>
@@ -302,12 +307,12 @@ function MobileFilter({
                             </span>
                           </Disclosure.Button>
                         </h3>
-                        <Disclosure.Panel className="pt-6">
+                        <Disclosure.Panel className="pt-6 ">
                           <div className="space-y-6">
                             {section.options.map((option, optionIdx) => (
                               <div
                                 key={option.value}
-                                className="flex items-center"
+                                className="flex text-sm items-center"
                               >
                                 <input
                                   id={`filter-mobile-${section.id}-${optionIdx}`}
@@ -318,11 +323,11 @@ function MobileFilter({
                                   onChange={(e) =>
                                     handleFilter(e, section, option)
                                   }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
                                 />
                                 <label
                                   htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                  className="ml-3 min-w-0 flex-1 text-gray-500"
+                                  className="ml-3 text-sm min-w-0 flex-1 text-gray-500"
                                 >
                                   {option.label}
                                 </label>
@@ -355,7 +360,7 @@ function DesktopFilter({ handleFilter, filters }) {
           {({ open }) => (
             <>
               <h3 className="-my-3 flow-root">
-                <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                <Disclosure.Button className="flex w-full items-center justify-between  py-3 text-sm text-gray-400 hover:text-gray-500">
                   <span className="font-medium text-gray-900">
                     {section.name}
                   </span>
@@ -379,7 +384,7 @@ function DesktopFilter({ handleFilter, filters }) {
                         type="checkbox"
                         defaultChecked={option.checked}
                         onChange={(e) => handleFilter(e, section, option)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
                       />
                       <label
                         htmlFor={`filter-${section.id}-${optionIdx}`}
@@ -402,17 +407,17 @@ function DesktopFilter({ handleFilter, filters }) {
 function Pagination({ page, setPage, handlePage, totalItems }) {
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div className="flex items-center justify-between  px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
         <div
           onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
-          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
         </div>
         <div
           onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
         </div>
@@ -420,16 +425,16 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing{' '}
+            Showing{" "}
             <span className="font-medium">
               {(page - 1) * ITEMS_PER_PAGE + 1}
-            </span>{' '}
-            to{' '}
+            </span>{" "}
+            to{" "}
             <span className="font-medium">
               {page * ITEMS_PER_PAGE > totalItems
                 ? totalItems
                 : page * ITEMS_PER_PAGE}
-            </span>{' '}
+            </span>{" "}
             of <span className="font-medium">{totalItems}</span> results
           </p>
         </div>
@@ -445,7 +450,6 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </div>
-            {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
 
             {Array.from({ length: totalPages }).map((el, index) => (
               <div
@@ -453,10 +457,8 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
                 onClick={(e) => handlePage(index + 1)}
                 aria-current="page"
                 className={`relative cursor-pointer z-10 inline-flex items-center ${
-                  index + 1 === page
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-400'
-                } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  index + 1 === page ? "bg-black text-white" : "text-gray-400"
+                } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
               >
                 {index + 1}
               </div>
@@ -478,13 +480,13 @@ function Pagination({ page, setPage, handlePage, totalItems }) {
 
 function ProductGrid({ products }) {
   return (
-    <div className="bg-white">
+    <div className="">
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+        <div className="mt-6 grid  gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {products.map((product) => (
             <div key={product.id}>
-              <Link to={`/product-detail/${product.id}`} >
-                <div className="group relative border-solid border-2 p-2 border-gray-200">
+              <Link to={`/product-detail/${product.id}`}>
+                <div className="group relative  p-2 ">
                   <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                     <img
                       src={product.thumbnail}
@@ -496,11 +498,7 @@ function ProductGrid({ products }) {
                     <div>
                       <h3 className="text-sm text-gray-700">
                         <div href={product.thumbnail}>
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {product.title}
+                          <p className="w-20 truncate"> {product.title}</p>
                         </div>
                       </h3>
                       <p className="mt-1 text-sm text-gray-500">
@@ -510,8 +508,7 @@ function ProductGrid({ products }) {
                     </div>
                     <div>
                       <p className="text-sm block font-medium text-gray-900">
-                        $
-                        {product.discountPrice}
+                        ${product.discountPrice}
                       </p>
                       <p className="text-sm block line-through font-medium text-gray-400">
                         ${product.price}
@@ -523,19 +520,19 @@ function ProductGrid({ products }) {
                       <p className="text-sm text-red-400">product deleted</p>
                     </div>
                   )}
-                  {product.stock<=0 && (
-                  <div>
-                    <p className="text-sm text-red-400">out of stock</p>
-                  </div>
-                )}
+                  {product.stock <= 0 && (
+                    <div>
+                      <p className="text-sm text-red-400">out of stock</p>
+                    </div>
+                  )}
                 </div>
               </Link>
               <div className="mt-5">
                 <Link
                   to={`/admin/product-form/edit/${product.id}`}
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md  px-3 py-2 text-sm border text-black/70 hover:text-black hover:border-black font-semibold  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  focus-visible:outline-black/40"
                 >
-                  Edit Product
+                  Edit individually
                 </Link>
               </div>
             </div>
