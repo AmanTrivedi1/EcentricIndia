@@ -183,23 +183,50 @@ passport.deserializeUser(function (user, cb) {
 const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
 
 server.post("/create-payment-intent", async (req, res) => {
-  const { totalAmount, orderId } = req.body;
-
+  const { totalAmount, orderId, currency, user, selectedAddress } = req.body;
+  // console.log("kya hai currency", selectedAddress);
   // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: totalAmount * 100, // for decimal compensation
-    currency: "inr",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-    metadata: {
-      orderId,
-    },
-  });
+  try {
+    // const userData = await User.findById(user);
+    const customer = await stripe.customers.create({
+      name: selectedAddress.name,
+      email: selectedAddress.email,
+      address: {
+        line1: selectedAddress.street,
+        postal_code: selectedAddress.pincode,
+        city: selectedAddress.city,
+        state: selectedAddress.state,
+        // country: userData.city,
+      },
+      phone: selectedAddress.phone,
+    });
+    // console.log("userBboo", customer);
 
-  res.send({
-    clientSecret: paymentIntent.client_secret,
-  });
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalAmount * 100, // for decimal compensation
+      currency: currency,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      metadata: {
+        orderId: orderId,
+        name: selectedAddress.name,
+        email: selectedAddress.email,
+        address: `street: ${selectedAddress.street}, city: ${selectedAddress.city}, state:${selectedAddress.state}, pincode: ${selectedAddress.pincode}
+        `,
+        phone: selectedAddress.phone,
+      },
+      receipt_email: selectedAddress.email,
+      // customer: customer,
+    });
+
+    // console.log("dekho yaar", paymentIntent);
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (err) {
+    console.log("error", err);
+  }
 });
 
 main().catch((err) => console.log(err));

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserInfo, updateUserAsync } from "../userSlice";
 import { useForm } from "react-hook-form";
+import { useCurrency } from "../../../context/CurrencyContext";
 
 export default function UserProfile() {
+  const { selectedCurrency, setSelectedCurrency } = useCurrency();
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
   const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
@@ -50,6 +52,13 @@ export default function UserProfile() {
     setShowAddAddressForm(false);
   };
 
+  // useEffect(() => {}, [selectedCurrency]);
+
+  const handelCurrencyChange = (e) => {
+    // console.log("lololo", .e);
+    setSelectedCurrency(e.target.value);
+  };
+
   return (
     <div>
       <div className="mx-auto mt-12  max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -69,6 +78,32 @@ export default function UserProfile() {
             </h3>
           )}
         </div>
+        {/*  */}
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="inr"
+              name="currency"
+              checked={selectedCurrency === "inr"}
+              onClick={handelCurrencyChange}
+            />
+            INR
+          </label>
+          <br />
+          <label>
+            <input
+              type="radio"
+              value="usd"
+              name="currency"
+              checked={selectedCurrency === "usd"}
+              onClick={handelCurrencyChange}
+            />
+            USD
+          </label>
+          <br />
+        </div>
+        {/*  */}
 
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <button

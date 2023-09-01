@@ -4,13 +4,14 @@ const { Category } = require("../model/Category");
 
 exports.createProduct = async (req, res) => {
   // this product we have to get from API body
-  console.log("sdkfm", req.body);
+  console.log("jmjm", req.body);
   const product = new Product(req.body);
+  product.USDprice = req.body.USDprice;
+  console.log("sdkfm", product);
   const brandCheck = await Brand.find({ value: req.body.brand }).exec();
   const categoryCheck = await Category.find({
     value: req.body.category,
   }).exec();
-  console.log("qwer", brandCheck, categoryCheck);
   let brand, category;
   if (brandCheck.length === 0) {
     brand = new Brand({ label: req.body.brand, value: req.body.brand });
@@ -23,8 +24,11 @@ exports.createProduct = async (req, res) => {
     });
     await category.save();
   }
-  product.discountPrice = Math.round(
-    product.price * (1 - product.discountPercentage / 100)
+  product.discountPrice.push(
+    Math.round(product.price * (1 - product.discountPercentage[0] / 100))
+  );
+  product.discountPrice.push(
+    Math.round(product.USDprice * (1 - product.discountPercentage[1] / 100))
   );
   try {
     const doc = await product.save();
@@ -132,8 +136,12 @@ exports.updateProduct = async (req, res) => {
       });
       await category.save();
     }
-    product.discountPrice = Math.round(
-      product.price * (1 - product.discountPercentage / 100)
+    product.discountPrice = [];
+    product.discountPrice.push(
+      Math.round(product.price * (1 - product.discountPercentage[0] / 100))
+    );
+    product.discountPrice.push(
+      Math.round(product.USDprice * (1 - product.discountPercentage[1] / 100))
     );
     const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);

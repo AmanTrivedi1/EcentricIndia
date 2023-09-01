@@ -7,10 +7,11 @@ const productSchema = new Schema({
   price: {
     type: Number,
   },
-  discountPercentage: {
+  USDprice: {
     type: Number,
-    min: [0, "wrong min discount"],
-    max: [100, "wrong max discount"],
+  },
+  discountPercentage: {
+    type: [Number],
   },
   rating: {
     type: Number,
@@ -26,7 +27,7 @@ const productSchema = new Schema({
   color: { type: String },
   size: { type: String },
   highlights: { type: [String] },
-  discountPrice: { type: Number },
+  discountPrice: { type: [Number] },
   deleted: { type: Boolean, default: false },
 });
 

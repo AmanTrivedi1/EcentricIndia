@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -16,6 +17,7 @@ import {
   selectStatus,
 } from "../features/order/orderSlice";
 import { selectUserInfo } from "../features/user/userSlice";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -26,13 +28,22 @@ function Checkout() {
     formState: { errors },
   } = useForm();
 
+  const { selectedCurrency } = useCurrency();
   const user = useSelector(selectUserInfo);
   const items = useSelector(selectItems);
   const status = useSelector(selectStatus);
   const currentOrder = useSelector(selectCurrentOrder);
 
-  const totalAmount = items.reduce(
-    (amount, item) => item.product.discountPrice * item.quantity + amount,
+  // const totalAmount = items.reduce(
+  //   (amount, item) => item.product.discountPrice * item.quantity + amount,
+  //   0
+  // );
+  const totalINRAmount = items.reduce(
+    (amount, item) => item?.product?.discountPrice[0] * item?.quantity + amount,
+    0
+  );
+  const totalUSDAmount = items.reduce(
+    (amount, item) => item?.product?.discountPrice[1] * item?.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -57,9 +68,22 @@ function Checkout() {
     console.log(e.target.value);
     setPaymentMethod(e.target.value);
   };
+  // let totalOrderAmountInCurrency = 0;
+  // useEffect(() => {
+  //   if (selectedCurrency === "inr") {
+  //     totalOrderAmountInCurrency = totalINRAmount;
+  //   } else {
+  //     totalOrderAmountInCurrency = totalUSDAmount;
+  //   }
+  // }, [selectedCurrency]);
 
   const handleOrder = (e) => {
     if (selectedAddress && paymentMethod) {
+      let totalAmount = 0;
+      {
+        totalAmount =
+          selectedCurrency === "inr" ? totalINRAmount : totalUSDAmount;
+      }
       const order = {
         items,
         totalAmount,
@@ -67,6 +91,7 @@ function Checkout() {
         user: user.id,
         paymentMethod,
         selectedAddress,
+        currency: selectedCurrency,
         status: "pending", // other status can be delivered, received.
       };
       dispatch(createOrderAsync(order));
@@ -79,12 +104,12 @@ function Checkout() {
   return (
     <>
       {!items.length && <Navigate to="/" replace={true}></Navigate>}
-      {currentOrder && currentOrder.paymentMethod === "cash" && (
+      {/* {currentOrder && currentOrder.paymentMethod === "cash" && (
         <Navigate
           to={`/order-success/${currentOrder.id}`}
           replace={true}
         ></Navigate>
-      )}
+      )} */}
       {currentOrder && currentOrder.paymentMethod === "card" && (
         <Navigate to={`/stripe-checkout/`} replace={true}></Navigate>
       )}
@@ -364,7 +389,7 @@ function Checkout() {
               <div className="mx-auto mt-12  rounded-md shadow-lg  p-2 max-w-7xl px-2 sm:px-2 lg:px-4">
                 <div className=" px-0 py-6 sm:px-0">
                   <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
-                    Cart
+                    Payment Gateway
                   </h1>
                   <div className="flow-root">
                     <ul className="-my-6 divide-y ">
@@ -386,16 +411,22 @@ function Checkout() {
                                     {item.product.title}
                                   </a>
                                 </h3>
-                                <p className="ml-4">
-                                  ${item.product.discountPrice}
-                                </p>
+                                {selectedCurrency === "inr" ? (
+                                  <p className="ml-4">
+                                    &#8377; {item.product.discountPrice[0]}
+                                  </p>
+                                ) : (
+                                  <p className="ml-4">
+                                    $ {item.product.discountPrice[1]}
+                                  </p>
+                                )}
                               </div>
                               <p className="mt-1 text-sm text-gray-500">
                                 {item.product.brand}
                               </p>
                             </div>
                             <div className="flex flex-1 items-end justify-between text-sm">
-                              <div className="text-gray-500">
+                              <div className="text-gray-500 ">
                                 <label
                                   htmlFor="quantity"
                                   className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
@@ -403,15 +434,15 @@ function Checkout() {
                                   Qty
                                 </label>
                                 <select
+                                  className="rounded-2xl border-black "
                                   onChange={(e) => handleQuantity(e, item)}
                                   value={item.quantity}
-                                  className="rounded-lg"
                                 >
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                  <option value="4">4</option>
-                                  <option value="5">5</option>
+                                  {[...Array(item.product.stock)].map(
+                                    (e, i) => (
+                                      <option key={i + 1}>{i + 1}</option>
+                                    )
+                                  )}
                                 </select>
                               </div>
 
@@ -435,7 +466,11 @@ function Checkout() {
                 <div className=" px-2 py-6 sm:px-2">
                   <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>$ {totalAmount}</p>
+                    {selectedCurrency === "inr" ? (
+                      <p>&#8377; {totalINRAmount}</p>
+                    ) : (
+                      <p>$ {totalUSDAmount}</p>
+                    )}
                   </div>
                   <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                     <p>Total Items in Cart</p>

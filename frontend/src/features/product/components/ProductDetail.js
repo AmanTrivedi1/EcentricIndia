@@ -5,7 +5,7 @@ import Loader from "../../../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-
+import { useCurrency } from "../../../context/CurrencyContext";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
   fetchProductByIdAsync,
@@ -24,6 +24,7 @@ function classNames(...classes) {
 }
 
 export default function ProductDetail() {
+  const { selectedCurrency } = useCurrency();
   const [selectedColor, setSelectedColor] = useState();
   const [selectedSize, setSelectedSize] = useState();
   const user = useSelector(selectLoggedInUser);
@@ -32,7 +33,7 @@ export default function ProductDetail() {
   const similarCategory = useSelector(selectProductByCategory);
   const dispatch = useDispatch();
   const params = useParams();
-  console.log("param ", params);
+  console.log("param ", product);
   const alert = useAlert();
   const status = useSelector(selectProductListStatus);
 
@@ -62,7 +63,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (product) {
-      console.log("mpommomom", product.id);
+      console.log("mpommomom", product);
       const category = product?.category;
       const id = product?.id;
       dispatch(fetchProductByCategoryAsync({ category, id }));
@@ -166,12 +167,22 @@ export default function ProductDetail() {
               <h1 className=" md:text-3xl mt-4 lg:mt-0 text-2xl font-bold ">
                 {product.title}
               </h1>
-              <div className="flex gap-x-4 mt-2">
-                <p className="text-xl">{product.discountPrice} INR</p>
-                <p className="line-through text-xl text-gray-400">
-                  {product.price} INR
-                </p>
-              </div>
+              {selectedCurrency === "inr" ? (
+                <div className="flex gap-x-4 mt-2">
+                  <p className="text-xl">&#8377; {product.discountPrice[0]}</p>
+                  <p className="line-through text-xl text-gray-400">
+                    &#8377; {product.price}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex gap-x-4 mt-2">
+                  <p className="text-xl">$ {product.discountPrice[1]}</p>
+                  <p className="line-through text-xl text-gray-400">
+                    $ {product.USDprice}
+                  </p>
+                </div>
+              )}
+
               <div className="">
                 <h3 className="sr-only">Reviews</h3>
                 <div className=" flex font-xl ">

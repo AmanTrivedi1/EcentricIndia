@@ -12,11 +12,12 @@ import {
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-
+import { useCurrency } from "../../../context/CurrencyContext";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
 import Pagination from "../../common/Pagination";
 
 export default function Product() {
+  const { selectedCurrency } = useCurrency();
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
   const totalItems = useSelector(selectTotalItems);
@@ -73,6 +74,7 @@ export default function Product() {
 }
 
 function ProductGrid({ products, status }) {
+  const { selectedCurrency } = useCurrency();
   return (
     <div className="min-h-[300px]">
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
@@ -104,14 +106,25 @@ function ProductGrid({ products, status }) {
                       <span className=" align-bottom">{product.rating}</span>
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm block font-medium text-gray-900">
-                      ${product.discountPrice}
-                    </p>
-                    <p className="text-sm block line-through font-medium text-gray-400">
-                      ${product.price}
-                    </p>
-                  </div>
+                  {selectedCurrency === "inr" ? (
+                    <div>
+                      <p className="text-sm block font-medium text-gray-900">
+                        &#8377;{product.discountPrice[0]}
+                      </p>
+                      <p className="text-sm block line-through font-medium text-gray-400">
+                        &#8377;{product.price}
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm block font-medium text-gray-900">
+                        $ {product.discountPrice[1]}
+                      </p>
+                      <p className="text-sm block line-through font-medium text-gray-400">
+                        $ {product.USDprice}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 {product.deleted && (
                   <div>
