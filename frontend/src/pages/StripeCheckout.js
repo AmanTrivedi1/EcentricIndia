@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
-
 import CheckoutForm from "./CheckoutForm";
 import "../Stripe.css";
 import { selectCurrentOrder } from "../features/order/orderSlice";
-
+import { useCurrency } from "../context/CurrencyContext";
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
@@ -15,6 +14,7 @@ const stripePromise = loadStripe(
 );
 
 export default function StripeCheckout() {
+  const { selectedCurrency } = useCurrency();
   const [clientSecret, setClientSecret] = useState("");
   const currentOrder = useSelector(selectCurrentOrder);
 
@@ -26,6 +26,9 @@ export default function StripeCheckout() {
       body: JSON.stringify({
         totalAmount: currentOrder.totalAmount,
         orderId: currentOrder.id,
+        currency: selectedCurrency,
+        user: currentOrder.user,
+        selectedAddress: currentOrder.selectedAddress,
       }),
     })
       .then((res) => res.json())

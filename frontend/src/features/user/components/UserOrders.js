@@ -14,6 +14,8 @@ export default function UserOrders() {
   const orders = useSelector(selectUserOrders);
   const status = useSelector(selectUserInfoStatus);
 
+  console.log("aesa kya hua", orders);
+
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync());
   }, [dispatch]);
@@ -52,9 +54,15 @@ export default function UserOrders() {
                                     {item.product.title}
                                   </a>
                                 </h3>
-                                <p className="ml-4">
-                                  ${item.product.discountPrice}
-                                </p>
+                                {orders.currency === "inr" ? (
+                                  <p className="ml-4">
+                                    &#8377; {item.product.discountPrice[0]}
+                                  </p>
+                                ) : (
+                                  <p className="ml-4">
+                                    ${item.product.discountPrice[1]}
+                                  </p>
+                                )}
                               </div>
                               <p className="mt-1 text-sm text-gray-500">
                                 {item.product.brand}
@@ -81,7 +89,11 @@ export default function UserOrders() {
                 <div className="0 px-4 py-6 sm:px-6">
                   <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>$ {order.totalAmount}</p>
+                    {orders.currency === "inr" ? (
+                      <p>&#8377; {order.totalAmount}</p>
+                    ) : (
+                      <p>$ {order.totalAmount}</p>
+                    )}
                   </div>
                   <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                     <p>Total Items in Cart</p>

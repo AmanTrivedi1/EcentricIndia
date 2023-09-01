@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import {
   AiOutlineHome,
   AiOutlineLogin,
@@ -17,18 +17,17 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectItems } from "../cart/cartSlice";
-import { selectLoggedInUser } from "../auth/authSlice";
 
-const navigation = [
-  { name: "Products", link: "/", user: true },
-  { name: "Products", link: "/admin", admin: true },
-  { name: "Orders", link: "/admin/orders", admin: true },
-];
-const userNavigation = [
-  { name: "My Profile", link: "/profile" },
-  { name: "My Orders", link: "/my-orders" },
-  { name: "Sign out", link: "/logout" },
-];
+// const navigation = [
+//   { name: "Products", link: "/", user: true },
+//   { name: "Products", link: "/admin", admin: true },
+//   { name: "Orders", link: "/admin/orders", admin: true },
+// ];
+// const userNavigation = [
+//   { name: "My Profile", link: "/profile" },
+//   { name: "My Orders", link: "/my-orders" },
+//   { name: "Sign out", link: "/logout" },
+// ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -36,12 +35,13 @@ function classNames(...classes) {
 
 function NavBar(props) {
   const [searchProduct, setSearchProduct] = useState("");
-  const items = useSelector(selectItems);
+  // const items = useSelector(selectItems);
   const userInfo = useSelector(selectUserInfo);
   const [show, setShow] = useState(null);
   const [profile, setProfile] = useState(false);
   const navigate = useNavigate();
-  function handleClick() {
+
+  function handleClick(e) {
     navigate("/filters");
   }
 
@@ -65,21 +65,21 @@ function NavBar(props) {
                   </h2>
                 </div>
 
-                <form class="flex items-center ml-20">
-                  <label for="simple-search" class="sr-only">
+                <form className="flex items-center ml-20">
+                  <label htmlFor="simple-search" className="sr-only">
                     Search
                   </label>
-                  <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <div className="relative w-full">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <AiOutlineSearch className="w-4 h-4" />
                     </div>
                     <input
                       placeholder="Search "
                       type="search"
                       value={searchProduct}
-                      onClick={handleClick}
+                      onChange={handleClick}
                       id="simple-search"
-                      class="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black block w-full pl-10 p-2.5 "
+                      className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black block w-full pl-10 p-2.5 "
                       required
                     />
                   </div>
@@ -134,26 +134,32 @@ function NavBar(props) {
                     >
                       {profile && (
                         <ul className="p-2 w-40 border-r z-30 bg-white absolute rounded right-0 shadow top-0 mt-16 ">
-                          <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
-                            <div className="flex items-center">
-                              <AiOutlineLogin />
-                              <Link to="/login">
-                                <span className="ml-2">Login</span>
-                              </Link>
-                            </div>
-                          </li>
-                          <Link to="/login">
-                            <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
-                              <AiOutlineProfile />
-                              <span className="ml-2">Signup</span>
+                          {!userInfo && (
+                            <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
+                              <div className="flex items-center">
+                                <AiOutlineLogin />
+                                <Link to="/login">
+                                  <span className="ml-2">Login</span>
+                                </Link>
+                              </div>
                             </li>
-                          </Link>
-                          <Link to="/logout">
-                            <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
-                              <AiOutlineProfile />
-                              <span className="ml-2">Logout</span>
-                            </li>
-                          </Link>
+                          )}
+                          {!userInfo && (
+                            <Link to="/signup">
+                              <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
+                                <AiOutlineProfile />
+                                <span className="ml-2">Signup</span>
+                              </li>
+                            </Link>
+                          )}
+                          {userInfo && (
+                            <Link to="/logout">
+                              <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
+                                <AiOutlineProfile />
+                                <span className="ml-2">Logout</span>
+                              </li>
+                            </Link>
+                          )}
                         </ul>
                       )}
                       <div className="cursor-pointer flex items-center justify-center">
