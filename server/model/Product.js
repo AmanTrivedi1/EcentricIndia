@@ -13,12 +13,35 @@ const productSchema = new Schema({
   discountPercentage: {
     type: [Number],
   },
-  rating: {
+  ratings: {
     type: Number,
-    min: [0, "wrong min rating"],
-    max: [5, "wrong max price"],
     default: 0,
   },
+  numOfReviews: {
+    type: Number,
+    default: 0,
+  },
+  reviews: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      name: {
+        type: Number,
+        required: true,
+      },
+      rating: {
+        type: Number,
+        required: true,
+      },
+      comment: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   stock: { type: Number, min: [0, "wrong min stock"], default: 0 },
   brand: { type: String },
   category: { type: String },

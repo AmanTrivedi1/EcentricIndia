@@ -25,6 +25,8 @@ import UserProfilePage from "./pages/UserProfilePage";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import AdminRoute from "./pages/AdminRoute";
+import DashboardPage from "./pages/DashboardPage";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import AdminHome from "./pages/AdminHome";
 import AdminProductDetailPage from "./pages/AdminProductDetailPage";
@@ -34,6 +36,7 @@ import { positions, Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import StripeCheckout from "./pages/StripeCheckout";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import AboutusPage from "./pages/AboutusPage";
 
 const options = {
   timeout: 5000,
@@ -45,7 +48,19 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home></Home>,
   },
+  {
+    path: "/about",
+    element: <AboutusPage></AboutusPage>,
+  },
 
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedAdmin>
+        <DashboardPage></DashboardPage>
+      </ProtectedAdmin>
+    ),
+  },
   {
     path: "/admin",
     element: (
@@ -157,6 +172,10 @@ const router = createBrowserRouter([
   {
     path: "/logout",
     element: <Logout></Logout>,
+  },
+  {
+    path: "/admin-route",
+    element: <AdminRoute></AdminRoute>,
   },
   {
     path: "/forgot-password",

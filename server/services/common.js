@@ -17,7 +17,7 @@ exports.isAuth = (req, res, done) => {
 };
 
 exports.sanitizeUser = (user) => {
-  return { id: user.id, role: user.role };
+  return { id: user.id, role: user.role,name: user.name};
 };
 
 exports.cookieExtractor = function (req) {

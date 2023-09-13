@@ -5,17 +5,20 @@ const {
   fetchProductById,
   updateProduct,
   fetchProductsByCategory,
+  createProductReview,
 } = require("../controller/Product");
 const { Product } = require("../model/Product");
 
 const router = express.Router();
-//  /products is already added in base path
+//  products is already added in base path
 router
   .post("/", createProduct)
   .get("/", fetchAllProducts)
   .get("/category/", fetchProductsByCategory)
   .get("/:id", fetchProductById)
+  .put("/reviews", createProductReview)
   .patch("/:id", updateProduct);
+
 // .get('/update/test',async(req,res)=>{
 //       // For adding discountPrice to existing data : delete this code after use
 //      const products = await Product.find({});
@@ -26,5 +29,4 @@ router
 //      }
 //      res.send('ok')
 // })
-
 exports.router = router;

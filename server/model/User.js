@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
 const userSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
@@ -14,7 +13,6 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-
 const virtual = userSchema.virtual("id");
 virtual.get(function () {
   return this._id;
@@ -26,5 +24,4 @@ userSchema.set("toJSON", {
     delete ret._id;
   },
 });
-
 exports.User = mongoose.model("User", userSchema);

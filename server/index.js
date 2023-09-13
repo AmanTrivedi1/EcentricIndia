@@ -101,12 +101,10 @@ server.use("/auth", authRouter.router);
 server.use("/cart", isAuth(), cartRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
 server.use("/dashboard", dashboardRouter.router);
-
 // this line we add to make react router work in case of other routes doesnt match
 server.get("*", (req, res) =>
   res.sendFile(path.resolve("build", "index.html"))
 );
-
 // Passport Strategies
 passport.use(
   "local",
@@ -137,7 +135,7 @@ passport.use(
             sanitizeUser(user),
             process.env.JWT_SECRET_KEY
           );
-          done(null, { id: user.id, role: user.role, token }); // this lines sends to serializer
+          done(null, { id: user.id, role: user.role, name: user.name, token }); // this lines sends to serializer
         }
       );
     } catch (err) {
@@ -145,7 +143,6 @@ passport.use(
     }
   })
 );
-
 passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
@@ -161,27 +158,21 @@ passport.use(
     }
   })
 );
-
 // this creates session variable req.user on being called from callbacks
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
     return cb(null, { id: user.id, role: user.role });
   });
 });
-
 // this changes session variable req.user when called from authorized request
-
 passport.deserializeUser(function (user, cb) {
   process.nextTick(function () {
     return cb(null, user);
   });
 });
-
 // Payments
-
 // This is your test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
-
 server.post("/create-payment-intent", async (req, res) => {
   const { totalAmount, orderId, currency, user, selectedAddress } = req.body;
   // console.log("kya hai currency", selectedAddress);
@@ -201,9 +192,8 @@ server.post("/create-payment-intent", async (req, res) => {
       phone: selectedAddress.phone,
     });
     // console.log("userBboo", customer);
-
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalAmount * 100, // for decimal compensation
+      amount: totalAmount * 100,
       currency: currency,
       automatic_payment_methods: {
         enabled: true,
