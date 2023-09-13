@@ -13,7 +13,6 @@ export default function UserOrders() {
   const orders = useSelector(selectUserOrders);
   const status = useSelector(selectUserInfoStatus);
 
-  console.log("aesa kya hua", orders);
 
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync());
@@ -65,7 +64,7 @@ export default function UserOrders() {
                                       </p>
                                     ) : (
                                       <p className="ml-4">
-                                        ${item.product.discountPrice[1]}
+                                        ${item.product.discountPrice[1].toFixed(2)}
                                       </p>
                                     )}
                                   </div>
@@ -97,7 +96,7 @@ export default function UserOrders() {
                         {orders.currency === "inr" ? (
                           <p>&#8377; {order.totalAmount}</p>
                         ) : (
-                          <p>$ {order.totalAmount}</p>
+                          <p>$ {order.totalAmount.toFixed(2)}</p>
                         )}
                       </div>
                       <div className="flex justify-between my-2 text-base font-medium text-gray-900">
