@@ -53,7 +53,7 @@ export default function UserProfile() {
   };
 
   // useEffect(() => {}, [selectedCurrency]);
-
+  console.log(userInfo);
   const handelCurrencyChange = (e) => {
     // console.log("lololo", .e);
     setSelectedCurrency(e.target.value);

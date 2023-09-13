@@ -6,6 +6,8 @@ const {
   updateProduct,
   fetchProductsByCategory,
   createProductReview,
+  getProductReviews,
+  deleteReviews,
 } = require("../controller/Product");
 const { Product } = require("../model/Product");
 
@@ -16,17 +18,8 @@ router
   .get("/", fetchAllProducts)
   .get("/category/", fetchProductsByCategory)
   .get("/:id", fetchProductById)
-  .put("/reviews", createProductReview)
-  .patch("/:id", updateProduct);
+  .patch("/:id", updateProduct)
+  .put("/review", createProductReview);
 
-// .get('/update/test',async(req,res)=>{
-//       // For adding discountPrice to existing data : delete this code after use
-//      const products = await Product.find({});
-//      for(let product of products){
-//       product.discountPrice = Math.round(product.price*(1-product.discountPercentage/100))
-//       await product.save()
-//       console.log(product.title+ ' updated')
-//      }
-//      res.send('ok')
-// })
+router.route("/reviews").get(getProductReviews).delete(deleteReviews);
 exports.router = router;

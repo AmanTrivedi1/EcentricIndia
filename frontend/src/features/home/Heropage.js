@@ -1,19 +1,15 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import "./Heropage.css";
-import { useNavigate } from "react-router-dom";
+
 import one from "../../assets/image1.jpg";
 import two from "../../assets/image2.jpg";
 import three from "../../assets/image3.jpg";
 import four from "../../assets/image4.jpg";
 const HeroLmsSystem = () => {
-  const navigate = useNavigate();
-  function handleClick() {
-    navigate("/filters");
-  }
   return (
     <div className="hero-image">
-      <div className=" h-full  md:h-screen bg-gradient-to-b mt-6 ">
+      <div className=" h-full  xl:h-screen bg-gradient-to-b mt-6 ">
         <section className=" sm:py-16 ">
           <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">

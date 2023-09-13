@@ -41,8 +41,8 @@ function Filter(props) {
             <div className="flex items-center justify-between mx-20">
               <div className="flex w-full sm:w-auto items-center sm:items-stretch justify-end sm:justify-between">
                 <div className="flex  items-center hover:text-dark">
-                  <h2 className="hidden font-bold text-xl  sm:block  text-black  leading-normal pl-20">
-                    Ecentric india
+                  <h2 className="hidden font-bold text-xl  sm:block  text-black  leading-normal ">
+                    Ecentric India
                   </h2>
                 </div>
 
@@ -117,7 +117,36 @@ function Filter(props) {
                     to="/cart"
                     className="flex px-5 items-center py-6 text-sm "
                   >
-                    <MdOutlineShoppingCartCheckout className="text-2xl" />
+                    <svg
+                      className="fill-stroke text-black"
+                      width={20}
+                      height={22}
+                      viewBox="0 0 20 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4 1L1 5V19C1 19.5304 1.21071 20.0391 1.58579 20.4142C1.96086 20.7893 2.46957 21 3 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V5L16 1H4Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M1 5H19"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M14 9C14 10.0609 13.5786 11.0783 12.8284 11.8284C12.0783 12.5786 11.0609 13 10 13C8.93913 13 7.92172 12.5786 7.17157 11.8284C6.42143 11.0783 6 10.0609 6 9"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </Link>
                 </div>
                 <div className="hidden xl:flex items-center">
@@ -158,10 +187,29 @@ function Filter(props) {
                       )}
                       <div className="cursor-pointer flex items-center justify-center">
                         <div className=" flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-white transition duration-150 ease-in-out">
-                          <AiOutlineUser className="text-xl" />
-                        </div>
-                        <div className="ml-2 text-gray-600">
-                          <AiOutlineDown className="text-sm" />
+                          <svg
+                            className="fill-stroke text-black"
+                            width={18}
+                            height={20}
+                            viewBox="0 0 18 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M17 19V17C17 15.9391 16.5786 14.9217 15.8284 14.1716C15.0783 13.4214 14.0609 13 13 13H5C3.93913 13 2.92172 13.4214 2.17157 14.1716C1.42143 14.9217 1 15.9391 1 17V19"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M9 9C11.2091 9 13 7.20914 13 5C13 2.79086 11.2091 1 9 1C6.79086 1 5 2.79086 5 5C5 7.20914 6.79086 9 9 9Z"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -172,11 +220,30 @@ function Filter(props) {
           </div>
         </nav>
         <nav>
-          <div className="py-4 px-6 w-full flex xl:hidden sticky justify-between items-center  top-0 z-40">
-            <div className="w-full">
-              <h1>Ecentric India</h1>
+          <div className="flex  gap-x-2 xl:hidden items-center justify-between px-4 py-3  ">
+            <div className="">
+              <h1 className=" font-semibold hidden sm:block">Ecentric India</h1>
+              <h1 className="  block sm:hidden text-xl font-semibold ">Ec</h1>
             </div>
-            <div className="flex items-center">
+            <form className="flex items-center">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative block w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <AiOutlineSearch className="w-4 h-4" />
+                </div>
+                <input
+                  placeholder="Search "
+                  type="search"
+                  value={searchProduct}
+                  onChange={handleSearch}
+                  className="bg-[#F2F2F2]   h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black block w-full pl-10 p-2.5 "
+                  required
+                />
+              </div>
+            </form>
+            <div className="">
               <div
                 id="menu"
                 className="text-gray-800"
@@ -202,7 +269,7 @@ function Filter(props) {
               className="bg-gray-800 opacity-50 w-full h-full"
               onClick={() => setShow(!show)}
             />
-            <div className="w-64 z-40  overflow-y-auto  bg-white top-[-56px] absolute  shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
+            <div className="w-64 z-40  overflow-y-auto  bg-white top-[-70px] absolute  shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
               <div className="px-6 h-full">
                 <div className="flex flex-col justify-between h-full w-full">
                   <div>

@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import {
   AiOutlineLogin,
   AiOutlineProfile,
-  AiOutlineDown,
-  AiOutlineUser,
   AiOutlineClose,
 } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+
 import { useNavigate } from "react-router-dom";
 import { selectUserInfo } from "../user/userSlice";
 import { selectLoggedInUser } from "../auth/authSlice";
@@ -41,7 +39,7 @@ function NavBar(props) {
                     Ecentric India
                   </h2>
                 </div>
-                <form className="flex items-center ml-20">
+                <form className="flex items-center blo ml-20">
                   <label htmlFor="simple-search" className="sr-only">
                     Search
                   </label>
@@ -216,11 +214,32 @@ function NavBar(props) {
           </div>
         </nav>
         <nav>
-          <div className="py-4 px-6 w-full flex xl:hidden sticky justify-between items-center  top-0 z-40">
-            <div className="w-full">
-              <h1>Ecentric India</h1>
+          <div className="flex  gap-x-2 xl:hidden items-center justify-between px-4 py-3  ">
+            <div className="">
+              <h1 className=" font-semibold hidden sm:block">Ecentric India</h1>
+              <h1 className="  block sm:hidden text-xl font-semibold ">
+                EIndia
+              </h1>
             </div>
-            <div className="flex items-center">
+            <form className="flex items-center">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative block w-full">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <AiOutlineSearch className="w-4 h-4" />
+                </div>
+                <input
+                  placeholder="Search "
+                  type="search"
+                  onClick={handleClick}
+                  id="simple-search"
+                  className="bg-[#F2F2F2]   h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black block w-full pl-10 p-2.5 "
+                  required
+                />
+              </div>
+            </form>
+            <div className="">
               <div
                 id="menu"
                 className="text-gray-800"
@@ -243,7 +262,7 @@ function NavBar(props) {
             }
           >
             <div className=" w-full h-full" onClick={() => setShow(!show)} />
-            <div className="w-64 z-40  overflow-y-auto  bg-white top-[-56px] absolute  shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
+            <div className="w-64 z-40  overflow-y-auto  bg-white top-[-70px] absolute  shadow h-full flex-col justify-between xl:hidden pb-4 transition duration-150 ease-in-out">
               <div className="px-8  h-full">
                 <div className="flex flex-col justify-between  h-full w-full">
                   <div>
