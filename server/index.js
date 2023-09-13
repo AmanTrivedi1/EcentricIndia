@@ -35,13 +35,15 @@ server.post(
   express.raw({ type: "application/json" }),
   async (request, response) => {
     const sig = request.headers["stripe-signature"];
-
+    console.log("1")
     let event;
 
     try {
       event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+      console.log("2")
     } catch (err) {
       response.status(400).send(`Webhook Error: ${err.message}`);
+      console.log("3")
       return;
     }
 
@@ -49,7 +51,7 @@ server.post(
     switch (event.type) {
       case "payment_intent.succeeded":
         const paymentIntentSucceeded = event.data.object;
-
+        console.log("4")
         const order = await Order.findById(
           paymentIntentSucceeded.metadata.orderId
         );
@@ -61,7 +63,7 @@ server.post(
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
-
+    console.log("5")
     // Return a 200 response to acknowledge receipt of the event
     response.send();
   }

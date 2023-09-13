@@ -1,13 +1,16 @@
 const { Product } = require("../model/Product");
 const { Brand } = require("../model/Brand");
 const { Category } = require("../model/Category");
+const CC = require('currency-converter-lt')
 
 exports.createProduct = async (req, res) => {
-  // this product we have to get from API body
-  console.log("jmjm", req.body);
+  let currencyConverter = new CC({from:"INR", to:"USD"});
   const product = new Product(req.body);
-  product.USDprice = req.body.USDprice;
-  console.log("sdkfm", product);
+  const USDprice = await currencyConverter.convert(req.body.price).then((response) => {
+    return response;
+  })
+  
+  product.USDprice = USDprice;
   const brandCheck = await Brand.find({ value: req.body.brand }).exec();
   const categoryCheck = await Category.find({
     value: req.body.category,
@@ -25,15 +28,17 @@ exports.createProduct = async (req, res) => {
     await category.save();
   }
   product.discountPrice.push(
-    Math.round(product.price * (1 - product.discountPercentage[0] / 100))
+    Math.round(product.price * (1 - product.discountPercentage / 100))
   );
   product.discountPrice.push(
-    Math.round(product.USDprice * (1 - product.discountPercentage[1] / 100))
+    product.USDprice * (1 - product.discountPercentage / 100).toFixed(2)
   );
+  console.log("kjk",product)
   try {
     const doc = await product.save();
     res.status(201).json(doc);
   } catch (err) {
+    console.log("sfs",err)
     res.status(400).json(err);
   }
 };
@@ -116,15 +121,20 @@ exports.fetchProductById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
+    let currencyConverter = new CC({from:"INR", to:"USD"});
     const product = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    // console.log('adf',product)
     const brandCheck = await Brand.find({ value: req.body.brand }).exec();
     const categoryCheck = await Category.find({
       value: req.body.category,
     }).exec();
-    console.log("qwer", brandCheck, categoryCheck);
     let brand, category;
+    const USDprice = await currencyConverter.convert(req.body.price).then((response) => {
+      return response;
+    })    
+    product.USDprice = USDprice;
     if (brandCheck.length === 0) {
       brand = new Brand({ label: req.body.brand, value: req.body.brand });
       await brand.save();
@@ -138,14 +148,15 @@ exports.updateProduct = async (req, res) => {
     }
     product.discountPrice = [];
     product.discountPrice.push(
-      Math.round(product.price * (1 - product.discountPercentage[0] / 100))
-    );
-    product.discountPrice.push(
-      Math.round(product.USDprice * (1 - product.discountPercentage[1] / 100))
-    );
-    const updatedProduct = await product.save();
+      Math.round(product.price * (1 - product.discountPercentage / 100))
+      );
+      product.discountPrice.push(
+        product.USDprice * (1 - product.discountPercentage / 100).toFixed(2)
+        );
+        const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);
   } catch (err) {
+    console.log(err)
     res.status(400).json(err);
   }
 };

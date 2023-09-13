@@ -16,6 +16,7 @@ const orderSchema = new Schema(
     status: { type: String, default: "pending" },
     selectedAddress: { type: Schema.Types.Mixed, required: true },
     currency: { type: String },
+    trackingLink:{type:String}
   },
   { timestamps: true }
 );

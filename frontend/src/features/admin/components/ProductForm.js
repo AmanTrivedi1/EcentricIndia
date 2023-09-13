@@ -45,9 +45,7 @@ function ProductForm() {
       setValue("title", selectedProduct.title);
       setValue("description", selectedProduct.description);
       setValue("price", selectedProduct.price);
-      setValue("USDprice", selectedProduct.USDprice);
-      setValue("inrDiscount", selectedProduct.discountPercentage[0]);
-      setValue("usdDiscount", selectedProduct.discountPercentage[1]);
+      setValue("discountPercentage", selectedProduct.discountPercentage);
       setValue("thumbnail", selectedProduct.thumbnail);
       setValue("stock", selectedProduct.stock);
       setValue("image1", selectedProduct.images[0]);
@@ -97,18 +95,14 @@ function ProductForm() {
                 product.highlight3,
                 product.highlight4,
               ];
-              product.discountPercentage = [
-                product.inrDiscount,
-                product.usdDiscount,
-              ];
+              
               product.rating = 0;
               delete product["image1"];
               delete product["image2"];
               delete product["image3"];
               product.price = +product.price;
-              product.USDprice = +product.USDprice;
               product.stock = +product.stock;
-              // product.discountPercentage = +product.discountPercentage;
+              product.discountPercentage = +product.discountPercentage;
               // console.log("update hua kya", product);
               if (params.id) {
                 product.id = params.id;
@@ -120,7 +114,7 @@ function ProductForm() {
                 navigate("/");
               } else {
                 dispatch(createProductAsync(product));
-                console.log("Product new", product);
+                // console.log("Product new", product);
                 alert.success("Product Created");
                 reset();
                 navigate("/");
@@ -281,65 +275,21 @@ function ProductForm() {
 
                   <div className="sm:col-span-2">
                     <label
-                      htmlFor="USDprice"
+                      htmlFor="discountPercentage"
                       className="block sm:text-sm text-xs font-medium leading-6 text-gray-900"
                     >
-                      Price in $
+                      Discount Percentage
                     </label>
 
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black/40 ">
                       <input
                         type="number"
-                        {...register("USDprice", {
-                          required: "USDprice is required",
-                          // min: 1,
-                          // max: 10000,
-                        })}
-                        id="USDprice"
-                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="inrDiscount"
-                      className="block sm:text-sm text-xs font-medium leading-6 text-gray-900"
-                    >
-                      Discount Percentage for &#8377;
-                    </label>
-
-                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black/40 ">
-                      <input
-                        type="number"
-                        {...register("inrDiscount", {
-                          required: "inrDiscount is required",
+                        {...register("discountPercentage", {
+                          required: "discountPercentage is required",
                           min: 0,
                           max: 100,
                         })}
-                        id="inrDiscount"
-                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="usdDiscount"
-                      className="block sm:text-sm text-xs font-medium leading-6 text-gray-900"
-                    >
-                      Discount Percentage for $
-                    </label>
-
-                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-black/40 ">
-                      <input
-                        type="number"
-                        {...register("usdDiscount", {
-                          required: "usdDiscount is required",
-                          min: 0,
-                          max: 100,
-                        })}
-                        id="usdDiscount"
+                        id="discountPercentage"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       />
                     </div>
