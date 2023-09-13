@@ -181,16 +181,24 @@ function AdminOrders() {
                             />
                           </div>
                           <span>
-                            {item.product.title} - #{item.quantity} - $
-                            {item.product.discountPrice}
+                            Title:{item.product.title}
+                          </span>
+                          <span>
+                           Quantity: {item.quantity}
                           </span>
                         </div>
                       ))}
                     </td>
                     <td className="py-3 px-0 text-center">
+                    {orders.currency === "inr" ? (
                       <div className="flex items-center justify-center">
-                        ${order.totalAmount}
+                      &#8377; {order.totalAmount}
                       </div>
+                        ) : (
+                          <div className="flex items-center justify-center">
+                        $ {order.totalAmount.toFixed(2)}
+                      </div>
+                        )}
                     </td>
                     <td className="py-3 px-0 text-center">
                       <div className="">

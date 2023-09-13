@@ -417,7 +417,7 @@ function Checkout() {
                                   </p>
                                 ) : (
                                   <p className="ml-4">
-                                    $ {item.product.discountPrice[1]}
+                                    $ {item.product.discountPrice[1].toFixed(2)}
                                   </p>
                                 )}
                               </div>
@@ -469,7 +469,7 @@ function Checkout() {
                     {selectedCurrency === "inr" ? (
                       <p>&#8377; {totalINRAmount}</p>
                     ) : (
-                      <p>$ {totalUSDAmount}</p>
+                      <p>$ {totalUSDAmount.toFixed(2)}</p>
                     )}
                   </div>
                   <div className="flex justify-between my-2 text-base font-medium text-gray-900">

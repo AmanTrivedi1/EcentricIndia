@@ -11,7 +11,7 @@ const productSchema = new Schema({
     type: Number,
   },
   discountPercentage: {
-    type: [Number],
+    type: Number,
   },
   ratings: {
     type: Number,
