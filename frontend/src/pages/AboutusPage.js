@@ -1,11 +1,13 @@
 import React from "react";
-import NavBar from "../features/navbar/Navbar";
+
 import Footer from "../features/common/Footer";
+import NewNavbar from "../features/navbar/NewNavbar";
 import AboutUs from "../features/about/AboutUs";
 const AboutusPage = () => {
   return (
     <>
-      <NavBar />
+     
+      <NewNavbar />
       <AboutUs />
       <Footer />
     </>

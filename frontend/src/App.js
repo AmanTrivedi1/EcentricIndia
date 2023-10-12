@@ -18,6 +18,7 @@ import {
 } from "./features/auth/authSlice";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import PageNotFound from "./pages/404";
+import NewNavbar from "./features/navbar/NewNavbar";
 import ContactPage from "./pages/ContactPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
@@ -25,7 +26,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 import Logout from "./features/auth/components/Logout";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import AdminRoute from "./pages/AdminRoute";
+
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import AdminHome from "./pages/AdminHome";
@@ -172,10 +173,6 @@ const router = createBrowserRouter([
   {
     path: "/logout",
     element: <Logout></Logout>,
-  },
-  {
-    path: "/admin-route",
-    element: <AdminRoute></AdminRoute>,
   },
   {
     path: "/forgot-password",

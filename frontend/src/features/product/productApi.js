@@ -36,6 +36,18 @@ export function createProduct(product) {
     resolve({ data });
   });
 }
+export function createComment(comment) {
+  return new Promise(async (resolve) => {
+    // console.log("createComment", comment);
+    const response = await fetch("/products/review", {
+      method: "PUT",
+      body: JSON.stringify(comment),
+      headers: { "content-type": "application/json" },
+    });
+    const data = await response.json();
+    resolve({ data });
+  });
+}
 
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
@@ -100,6 +112,39 @@ export function fetchCategories() {
 export function fetchBrands() {
   return new Promise(async (resolve) => {
     const response = await fetch("/brands");
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+
+export function fetchComments(prodId) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(`/products/review/${prodId}`);
+    const data = await response.json();
+    console.log("lolololololololol", data);
+    resolve({ data });
+  });
+}
+
+export function deleteCommentById(prodId,reviewId) {
+  return new Promise(async (resolve) => {
+    const response = await fetch(`/products/review/${prodId}/${reviewId}`, {
+          method: "delete",
+        });
+    const data = await response.json();
+    // console.log("lolololololololol", data);
+    resolve({ data });
+  });
+}
+
+export function editComment(comment) {
+  return new Promise(async (resolve) => {
+    // console.log("createComment", comment);
+    const response = await fetch("/products/review/edit", {
+      method: "PUT",
+      body: JSON.stringify(comment),
+      headers: { "content-type": "application/json" },
+    });
     const data = await response.json();
     resolve({ data });
   });

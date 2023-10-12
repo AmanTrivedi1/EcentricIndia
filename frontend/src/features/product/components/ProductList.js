@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../../components/Loader";
+import Star from "../../../components/Star";
 import {
   fetchBrandsAsync,
   fetchCategoriesAsync,
@@ -420,7 +421,10 @@ function ProductGrid({ products, status }) {
                       </div>
                     </h3>
                     <p className="mt-1 text-sm text-gray-700">
-                      <StarIcon className="w-6 h-6 inline"></StarIcon>
+                      <div className="w-6 h-6 inline">
+                        <Star reviews={product?.ratings} />
+                      </div>
+
                       <span className=" align-bottom">{product.rating}</span>
                     </p>
                   </div>

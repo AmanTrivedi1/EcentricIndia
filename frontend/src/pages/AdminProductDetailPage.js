@@ -1,9 +1,10 @@
 import AdminProductDetail from "../features/admin/components/AdminProductDetail";
-import NavBar from "../features/navbar/Navbar";
+
+import NewNavbar from "../features/navbar/NewNavbar";
 function AdminProductDetailPage() {
   return (
     <div>
-      <NavBar />
+      <NewNavbar />
       <AdminProductDetail />
     </div>
   );

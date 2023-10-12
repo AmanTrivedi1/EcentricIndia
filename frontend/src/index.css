@@ -4,4 +4,14 @@
 
 body {
   font-family: Poppins, sans-serif;
+  background-color: #ffffff;
+}
+@layer base {
+  body {
+    @apply text-primary font-secondary;
+  }
+
+  .btn {
+    @apply px-4 py-2   rounded-lg md:text-sm  flex items-center justify-center text-xs uppercase  font-semibold bg-primary text-white;
+  }
 }

@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { useCurrency } from "../../context/CurrencyContext";
 
+import Wrapper from "../common/Wrapper";
+
 export default function Cart() {
   const dispatch = useDispatch();
   const { selectedCurrency } = useCurrency();
@@ -39,17 +41,17 @@ export default function Cart() {
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
-
   return (
     <>
       {!items.length && cartLoaded ? (
         <>
-          <h1 className="sm:text-3xl  flex flex-col-reverse gap-2 items-center h-screen justify-center px-4 text-xl">
-            Your Cart is Empty <MdOutlineRemoveShoppingCart className="text-2xl" />
+          <h1 className="sm:text-3xl  flex flex-col-reverse gap-2 items-center pt-32  justify-center px-4 text-xl">
+            Your Cart is Empty
+            <MdOutlineRemoveShoppingCart className="text-2xl" />
           </h1>
         </>
       ) : (
-        <div>
+        <Wrapper>
           <div className="mx-auto mt-12 h-full  max-w-7xl px-4 flex   flex-col md:flex-row sm:px-6 lg:px-8">
             <div className=" w-full  border-0 md:border-r px-4 py-6 sm:px-6">
               <div className="flow-root">
@@ -174,7 +176,7 @@ export default function Cart() {
               </div>
             </div>
           </div>
-        </div>
+        </Wrapper>
       )}
     </>
   );

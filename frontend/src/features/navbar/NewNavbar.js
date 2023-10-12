@@ -1,53 +1,75 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   AiOutlineLogin,
   AiOutlineProfile,
   AiOutlineClose,
 } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
+import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 import { selectUserInfo } from "../user/userSlice";
+import { selectLoggedInUser } from "../auth/authSlice";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectItems } from "../cart/cartSlice";
-import { CgProfile } from "react-icons/cg";
-import { selectLoggedInUser } from "../auth/authSlice";
+import { motion } from "framer-motion";
+const line1 = "Ecntric India";
 
-import Wrapper from "../common/Wrapper";
+const sentence = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      staggerChildren: 0.08,
+    },
+  },
+};
+const letter = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-function Filter(props) {
-  const [searchProduct, setSearchProduct] = useState("");
-  const items = useSelector(selectItems);
+export default function NewNavbar() {
   const userInfo = useSelector(selectUserInfo);
   const user = useSelector(selectLoggedInUser);
-  const [admin, showAdmin] = useState(false);
-
   const [show, setShow] = useState(null);
+  const [admin, showAdmin] = useState(false);
   const [profile, setProfile] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    console.log(e.target.value);
-    props.handleSearch(e.target.value);
-    setSearchProduct(e.target.value);
-  };
-  useEffect(() => {}, [user]);
-
+  function handleClick(e) {
+    navigate("/filters");
+  }
   return (
     <>
-      <div className="bg-accent text-primary h-full w-full">
+      <div className="bg-accent text-primary  sm:pb-10 pb-16 w-full">
         {/* Code block starts */}
         <nav className="w-full mx-auto hidden xl:block  ">
           <div className="container px-6 justify-between h-16 flex items-center lg:items-stretch mx-auto">
             <div className="h-full flex items-center">
               <div className="mr-10 flex items-center">
-                <h3 className="text-base text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block">
-                  Ecentric India
-                </h3>
+                <motion.h3
+                  variants={sentence}
+                  initial="hidden"
+                  animate="visible"
+                  className="text-base text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block"
+                >
+                  {line1.split("").map((char, index) => {
+                    return (
+                      <motion.span key={char + " " + index} variants={letter}>
+                        {char}
+                      </motion.span>
+                    );
+                  })}
+                </motion.h3>
               </div>
               <ul className="pr-12 xl:flex gap-x-10 items-center h-full hidden">
                 <li className="cursor-pointer h-full flex items-center hover:text-black text-sm text-primary tracking-normal border-b-2 border-white">
@@ -151,9 +173,10 @@ function Filter(props) {
                     <input
                       placeholder="Search "
                       type="search"
-                      value={searchProduct}
-                      onChange={handleSearch}
-                      className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5 "
+                      onClick={handleClick}
+                      id="simple-search"
+                      className="bg-[#F2F2F2]   h-10 border border-gray-300 text-primary text-sm rounded-lg focus:ring-black/40 focus:border-black/40 block w-full pl-10 p-2.5 "
+                      required
                     />
                   </div>
                 </div>
@@ -333,11 +356,12 @@ function Filter(props) {
                 <AiOutlineSearch className="w-4 h-4" />
               </div>
               <input
-                placeholder="Search "
+                placeholder="Search"
                 type="search"
-                value={searchProduct}
-                onChange={handleSearch}
-                className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5 "
+                onClick={handleClick}
+                id="simple-search"
+                className="bg-[#F2F2F2]   h-10 border border-gray-300 text-primary text-sm rounded-lg focus:ring-black/40 focus:border-black/40 block w-full pl-10 p-2.5 "
+                required
               />
             </div>
           </div>
@@ -521,5 +545,3 @@ function Filter(props) {
     </>
   );
 }
-
-export default Filter;

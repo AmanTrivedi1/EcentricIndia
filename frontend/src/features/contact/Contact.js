@@ -1,125 +1,128 @@
-import React, { useRef } from "react";
-import emailjs from "@emailjs/browser";
-import { AiOutlineArrowRight } from "react-icons/ai";
-function Contact() {
-  const form = useRef();
-  const sendEmail = (e) => {
-    e.preventDefault();
-    emailjs
-      .sendForm(
-        "service_3v9ic5v",
-        "template_hqmiwxy",
-        form.current,
-        "KW11fcCDBdJ-H3etP"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
-  };
-  return (
-    <>
-      <div className=" h-full md:h-screen  p-10 flex  md:flex-row flex-col-reverse   items-center justify-center">
-        <div className=" flex  w-full flex-col items-center justify-center gap-y-10">
-          <div className="flex  gap-y-2 w-72 flex-col border   rounded-lg p-4 items-center justify-center ">
-            <h1 className="font-bold text-lg ">Email Contact</h1>
-            <p>Ecentricindia@gmail.com</p>
-            <button className="flex border hover:border-black  rounded-lg p-2 items-center justify-center gap-x-2">
-              Contact us <AiOutlineArrowRight />{" "}
-            </button>
-          </div>
-          <div className="flex gap-y-2 w-72 flex-col border   rounded-lg p-2 items-center justify-center ">
-            <h1 className="font-bold text-lg ">Phone Contact</h1>
-            <p>900573.....</p>
-            <button className="flex border hover:border-black  rounded-lg p-2 items-center justify-center gap-x-2">
-              Contact us <AiOutlineArrowRight />{" "}
-            </button>
-          </div>
-          <div className="flex gap-y-2 w-72 flex-col border   rounded-lg p-2 items-center justify-center ">
-            <h1 className="font-bold text-lg ">Chatbot</h1>
-            <p>Ecentricindia@gmail.com</p>
-            <button className="flex border hover:border-black  rounded-lg p-2 items-center justify-center gap-x-2">
-              Redirect <AiOutlineArrowRight />{" "}
-            </button>
-          </div>
-        </div>
-        <div className="w-full flex flex-col items-center justify-center ">
-          <form ref={form} onSubmit={sendEmail}>
-            <div className=" py-2 lg:px-28 ">
-              <div className="md:flex  gap-x-4 items-center mt-12">
-                <div className="md:w-full">
-                  <label htmlFor="title" className=" sm:text-sm text-xs">
-                    Name
-                  </label>
-                  <div className="">
-                    <input
-                      type="text"
-                      className=" bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5  "
-                    />
-                  </div>
-                </div>
-                <div className=" md:w-full">
-                  <label htmlFor="title" className=" sm:text-sm text-xs">
-                    Email
-                  </label>
-                  <div className="">
-                    <input
-                      type="text"
-                      className=" bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5   "
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="md:flex gap-x-4 items-center mt-2">
-                <div className=" md:w-full">
-                  <label htmlFor="title" className=" sm:text-sm text-xs">
-                    Contact Details
-                  </label>
-                  <div className="">
-                    <input
-                      type="text"
-                      className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="mt-2">
-                  <label htmlFor="description" className=" sm:text-sm text-xs">
-                    Description
-                  </label>
-                  <div className="">
-                    <textarea
-                      id="description"
-                      rows={6}
-                      className="bg-[#F2F2F2]  border border-gray-300 h-40 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5 "
-                      defaultValue={""}
-                    />
-                  </div>
-                  <p className="  text-gray-500 text-xs">
-                    Write a few sentences about your roblem
-                  </p>
-                </div>
-              </div>
-              <p className="text-xs leading-3 text-gray-600 mt-4">
-                By clicking submit you agree to our terms of service, privacy
-                policy and how we use data as stated
-              </p>
-              <div className="flex items-start justify-start w-full">
-                <button className="mt-9 w-full text-base font-semibold leading-none text-white py-4 px-10 bg-black rounded hover:opacity-90 focus:ring-2 focus:ring-offset-2 focus:ring-black  focus:outline-none">
-                  Submit
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
+import { useState } from "react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Switch } from "@headlessui/react";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
 }
 
-export default Contact;
+export default function Example() {
+  const [agreed, setAgreed] = useState(false);
+
+  return (
+    
+      <div className="isolate bg-white px-6  sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+           Contact Us
+          </h2>
+          <p className="mt-2 text-lg leading-8 text-primary">
+           If you have any questions please contact us
+          </p>
+        </div>
+        <form
+          action="#"
+          method="POST"
+          className="mx-auto mt-16 max-w-xl sm:mt-20"
+        >
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div>
+              <label
+                htmlFor="first-name"
+                className="block text-sm font-semibold leading-6 text-primary"
+              >
+                First name
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="text"
+                  name="first-name"
+                  id="first-name"
+                  autoComplete="given-name"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="last-name"
+                className="block text-sm font-semibold leading-6 text-primary"
+              >
+                Last name
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="text"
+                  name="last-name"
+                  id="last-name"
+                  autoComplete="family-name"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold leading-6 text-primary"
+              >
+                Email
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  autoComplete="email"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="phone-number"
+                className="block text-sm font-semibold leading-6 text-primary"
+              >
+                Phone number
+              </label>
+              <div className="relative mt-2.5">
+                <input
+                  type="tel"
+                  name="phone-number"
+                  id="phone-number"
+                  autoComplete="tel"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-semibold leading-6 text-primary"
+              >
+                Message
+              </label>
+              <div className="mt-2.5">
+                <textarea
+                  name="message"
+                  id="message"
+                  rows={4}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                  defaultValue={""}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-10">
+            <button
+              type="submit"
+              className="block w-full rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40"
+            >
+              Let's talk
+            </button>
+          </div>
+        </form>
+      </div>
+   
+  );
+}

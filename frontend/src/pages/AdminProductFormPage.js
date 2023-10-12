@@ -1,9 +1,10 @@
 import ProductForm from "../features/admin/components/ProductForm";
-import NavBar from "../features/navbar/Navbar";
+
+import NewNavbar from "../features/navbar/NewNavbar";
 function AdminProductFormPage() {
   return (
     <div>
-      <NavBar />
+      <NewNavbar />
       <ProductForm />
     </div>
   );

@@ -2,23 +2,34 @@ import { useState, useEffect } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { Link } from "react-router-dom";
-import Loader from "../../../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { AiFillStar } from "react-icons/ai";
+import Star from "../../../components/Star";
+import ReadMoreReact from "read-more-react";
 import { useCurrency } from "../../../context/CurrencyContext";
+
 import "react-loading-skeleton/dist/skeleton.css";
 import {
   fetchProductByIdAsync,
   selectProductById,
+  selectAllComments,
   selectProductListStatus,
   fetchProductByCategoryAsync,
   selectProductByCategory,
+  createCommentAsync,
+  fetchCommentsAsync,
+  deleteCommentByIdAsync,
+  editCommentAsync,
+  allCommentsRatings,
+  allCommentsNumber,
 } from "../productSlice";
 import { useParams } from "react-router-dom";
 import { addToCartAsync, selectItems } from "../../cart/cartSlice";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { useAlert } from "react-alert";
+
 import Product from "../../../components/Product";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -28,21 +39,33 @@ export default function ProductDetail() {
   const { selectedCurrency } = useCurrency();
   const [selectedColor, setSelectedColor] = useState();
   const [selectedSize, setSelectedSize] = useState();
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editedCommentText, setEditedCommentText] = useState("");
+  const [editedCommentRating, setEditedCommentRating] = useState("");
+
+  const [comment, setComment] = useState("");
+  const [commentRating, setCommentRating] = useState(1);
   const user = useSelector(selectLoggedInUser);
+  console.log("user", user);
   const items = useSelector(selectItems);
   const product = useSelector(selectProductById);
   const similarCategory = useSelector(selectProductByCategory);
+  const allComments = useSelector(selectAllComments);
+  const totalRating = useSelector(allCommentsRatings);
+  const numberofReviews = useSelector(allCommentsNumber);
+  console.log("terer maa ki ", allComments);
+  // setCommentL(allComments);
   const dispatch = useDispatch();
   const params = useParams();
-  console.log("param ", product);
-  console.log(similarCategory, "line12");
   const alert = useAlert();
   const status = useSelector(selectProductListStatus);
 
+  const minimumLength = 80;
+  const idealLength = 100;
+  const maxLength = 200;
   const handleCart = (e) => {
     e.preventDefault();
     if (items.findIndex((item) => item.product.id === product.id) < 0) {
-      console.log({ items, product });
       const newItem = {
         product: product.id,
         quantity: 1,
@@ -59,27 +82,43 @@ export default function ProductDetail() {
     }
   };
 
-  console.log("sjdkbfjadmqorvj ejve jvetj rvk vrtgor,", similarCategory);
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
   }, [dispatch, params.id]);
 
   useEffect(() => {
     if (product) {
-      console.log("mpommomom", product);
       const category = product?.category;
       const id = product?.id;
+      dispatch(fetchCommentsAsync(product.id));
       dispatch(fetchProductByCategoryAsync({ category, id }));
     }
   }, [dispatch, product]);
-  const cd = product;
-  console.log(cd);
+
+  const CommentDeleteHandler = async (reviewId) => {
+    dispatch(
+      deleteCommentByIdAsync({ prodId: product.id, reviewId: reviewId })
+    );
+  };
+
+  const startEditing = (reviews) => {
+    setEditingCommentId(reviews._id);
+    setEditedCommentText(reviews.comment);
+    setEditedCommentRating(reviews.rating);
+  };
+
+  const formatDate = (timestamp) => {
+    const dateObj = new Date(timestamp);
+    return `${dateObj.getDate()}-${
+      dateObj.getMonth() + 1
+    }-${dateObj.getFullYear()} ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}`;
+  };
 
   return (
     <>
       {status === "loading" ? <Product /> : null}
       {product && (
-        <div className="flex pb-8 lg:flex-row flex-col px-4 items-start  mt-20 gap-x-10 justify-center">
+        <div className="flex bg-accent pb-8 lg:flex-row flex-col px-4 items-start    md:mt-5 gap-x-10 justify-center">
           <div className=" ">
             <nav aria-label="Breadcrumb">
               <ol className="">
@@ -169,50 +208,53 @@ export default function ProductDetail() {
           <div className=" rightside  lg:w-96  w-full  ">
             <div className="">
               <h2 className="sr-only">Product information</h2>
-              <h1 className=" md:text-3xl mt-4 lg:mt-0 text-2xl font-bold ">
+              <h1 className="  mt-10 lg:mt-5  text-2xl md:text-3xl font-bold ">
                 {product.title}
               </h1>
-              {selectedCurrency === "inr" ? (
-                <div className="flex gap-x-4 mt-2">
-                  <p className="text-xl">&#8377; {product.discountPrice[0]}</p>
-                  <p className="line-through text-xl text-gray-400">
-                    &#8377; {product.price}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex gap-x-4 mt-2">
-                  <p className="text-xl">$ {product.discountPrice[1]}</p>
-                  <p className="line-through text-xl text-gray-400">
-                    $ {product.USDprice}
-                  </p>
-                </div>
-              )}
+              <p className="text-sm items-center flex gap-x-2">
+                {" "}
+                <span>Category</span>({product.category})
+              </p>
+              <div className="mt-2">
+                <p className="  mt-2 lg:mt-0 sm:text-base text-sm text-[#87898B]  ">
+                  Category:
+                  <span className="text-black/80 ml-2">{product.brand} </span>
+                </p>
+              </div>
+              <div className="mt-2">
+                <p className="  mt-2 lg:mt-0 sm:text-base text-sm text-[#87898B]  ">
+                  Size/Quantity:
+                  <span className="text-black/80 ml-2">{product.size} </span>
+                </p>
+              </div>
 
-              <div className="">
-                <h3 className="sr-only">Reviews</h3>
-                <div className=" flex font-xl ">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        product.rating > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
-                        "h-5 w-5 flex-shrink-0"
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className=" sr-only">{product.rating} out of 5 stars</p>
-                <div
-                  className="mt-2"
-                  style={{
-                    backgroundColor: `${product.color}`,
-                    width: "30px",
-                    height: "30px",
-                  }}
-                ></div>
+              <div className="mt-2">
+                <p className="  mt-2 lg:mt-0 sm:text-base text-sm text-[#87898B]  ">
+                  Stocks
+                  <span className="text-black/80 ml-2">{product.stock} </span>
+                </p>
+              </div>
+              <div className="mt-2">
+                <Star reviews={product?.ratings} />
+              </div>
+              <div className="mt-10">
+                {selectedCurrency === "inr" ? (
+                  <div className="flex gap-x-4 mt-2">
+                    <p className="sm:text-base text-sm">
+                      &#8377; {product.discountPrice[0]}
+                    </p>
+                    <p className="line-through sm:text-base text-sm text-gray-400">
+                      &#8377; {product.price}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex gap-x-4 mt-2">
+                    <p className="text-xl">$ {product.discountPrice[1]}</p>
+                    <p className="line-through text-xl text-gray-400">
+                      $ {product.USDprice}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <form className="mt-10">
@@ -333,7 +375,7 @@ export default function ProductDetail() {
                   <button
                     onClick={handleCart}
                     type="submit"
-                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-8 py-3 text-base font-medium text-white  focus:outline-none focus:ring-2  focus:ring-offset-2"
+                    className="mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-8 py-3 text-base font-medium text-white  focus:outline-none focus:ring-2  focus:ring-offset-2"
                   >
                     Add to Cart
                   </button>
@@ -343,10 +385,16 @@ export default function ProductDetail() {
           </div>
         </div>
       )}
-      <h1 className="text-3xl   h-full font-semibold text-center">
-        You might also like
-      </h1>
-      <div className="py-10 mb-10 ">
+
+      {similarCategory.length > 0 ? (
+        <>
+          <h1 className="text-3xl bg-accent  h-full font-semibold text-center">
+            You might also like
+          </h1>
+        </>
+      ) : null}
+
+      <div className="py-10 bg-accent mb-10 ">
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
           <div className="mt-6 grid  gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
             {status === "loading" ? <></> : null}
@@ -360,7 +408,7 @@ export default function ProductDetail() {
                       className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                     />
                   </div>
-                  <div className="mt-4 flex justify-between">
+                  <div className=" m-10 flex justify-between">
                     <div>
                       <h3 className="text-sm text-black">
                         <div href={product.thumbnail}>
@@ -375,7 +423,7 @@ export default function ProductDetail() {
                         </div>
                       </h3>
                       <p className="mt-1 text-sm text-gray-700">
-                        <StarIcon className="w-6 h-6 inline"></StarIcon>
+                        <Star reviews={product?.ratings} />
                         <span className=" align-bottom">{product.rating}</span>
                       </p>
                     </div>
@@ -412,6 +460,177 @@ export default function ProductDetail() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+        <div className="mx-auto   m-auto left-0 right-0 top-0 bottom-0 max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+          <div className=" sm:col-span-8 col-span-full md:w-80 mt-20">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                dispatch(
+                  createCommentAsync({
+                    userId: user?.id,
+                    name: user?.name,
+                    productId: product?.id,
+                    comment: e.target[0].value,
+                    rating: e.target[1].value,
+                  })
+                );
+                setComment("");
+                setCommentRating("");
+              }}
+            >
+              <textarea
+                value={comment}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                }}
+                rows={3}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+              />
+              <input
+                className="block w-full mt-4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                type="number"
+                placeholder="Rate out of 5 in Numbers"
+                min={1}
+                max={5}
+                value={commentRating}
+                onChange={(e) => {
+                  setCommentRating(e.target.value);
+                }}
+              />
+
+              {user && (
+                <button
+                  className="rounded-md mb-10 w-full mt-5 bg-black px-3 opacity-100 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              )}
+              {!user && (
+                <Link to="/login">
+                  <p className="rounded-md mb-10 w-full mt-5 text-center bg-black px-3 opacity-100 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/40">
+                    Login to Review
+                  </p>
+                </Link>
+              )}
+            </form>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+          <div className=" flex md:text-base cursor-pointer sm:text-sm text-xs flex-col   gap-y-2 ">
+            <div className="mb-20">
+              <h1 className="text-xl  font-semibold">Product Reviews</h1>
+              <div className="flex items-center justify-start gap-x-2">
+                <p>{numberofReviews}</p>
+                <p className="text-xs ml-1">(Total Reviews)</p>
+              </div>
+
+              <div className="flex items-center justify-start gap-x-2">
+                <Star reviews={product?.ratings} />
+                <p className="text-xs ml-1">(Average Rating)</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              {allComments?.map((reviews) => (
+                <div
+                  key={reviews._id}
+                  className={
+                    user?.id === reviews?.user ? "-order-1" : "order-none"
+                  }
+                >
+                  {user?.id === reviews?.user && <h1 className=""></h1>}
+                  {editingCommentId === reviews._id ? (
+                    <div>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          dispatch(
+                            editCommentAsync({
+                              userId: user?.id,
+                              name: user?.name,
+                              productId: product?.id,
+                              comment: e.target[0].value,
+                              rating: e.target[1].value,
+                            })
+                          );
+                          setEditingCommentId(null);
+                          setEditedCommentText("");
+                          setEditedCommentRating("");
+                        }}
+                      >
+                        <textarea
+                          value={editedCommentText}
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                          onChange={(e) => setEditedCommentText(e.target.value)}
+                        />
+                        <input
+                          type="number"
+                          className="block w-full mt-4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black/40 sm:text-sm sm:leading-6"
+                          min={1}
+                          max={5}
+                          value={editedCommentRating}
+                          onChange={(e) =>
+                            setEditedCommentRating(e.target.value)
+                          }
+                        />
+                        <div className="flex gap-x-2 mt-4 mb-4">
+                          <button className="btn " type="submit">
+                            Save
+                          </button>
+                          <button
+                            className="btn bg-red-500 hover:bg-red-600"
+                            onClick={() => setEditingCommentId(null)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  ) : (
+                    <div
+                      className={
+                        user?.id === reviews?.user ? "-order-1" : "order-none"
+                      }
+                    >
+                      <ReadMoreReact
+                        text={reviews.comment}
+                        min={minimumLength}
+                        ideal={idealLength}
+                        max={maxLength}
+                      />
+                      <Star reviews={reviews.rating}></Star>
+                      <p className="text-xs text-gray-600">{reviews.name}</p>
+                      <p className="text-xs">{formatDate(reviews.createdAt)}</p>
+                      {/* <p>{formatDate(reviews.updatedAt)}</p> */}
+                      <div className="flex gap-x-4 mt-4 mb-4 ">
+                        {user?.role === "admin" && (
+                          <button
+                            className="btn bg-red-500 hover:bg-red-600"
+                            onClick={() => {
+                              CommentDeleteHandler(reviews._id);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        )}
+                        {user?.id === reviews?.user && (
+                          <button
+                            className="btn border border-primary hover:bgorder-black text-primary bg-transparent"
+                            onClick={() => startEditing(reviews)}
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

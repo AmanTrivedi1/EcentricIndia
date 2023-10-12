@@ -8,6 +8,7 @@ const {
   createProductReview,
   getProductReviews,
   deleteReviews,
+  editProductReview
 } = require("../controller/Product");
 const { Product } = require("../model/Product");
 
@@ -19,7 +20,8 @@ router
   .get("/category/", fetchProductsByCategory)
   .get("/:id", fetchProductById)
   .patch("/:id", updateProduct)
-  .put("/review", createProductReview);
-
-router.route("/reviews").get(getProductReviews).delete(deleteReviews);
+  .put("/review", createProductReview)
+  .put("/review/edit", editProductReview)
+  .get("/review/:prodId", getProductReviews)
+  .delete("/review/:prodId/:reviewId", deleteReviews);
 exports.router = router;

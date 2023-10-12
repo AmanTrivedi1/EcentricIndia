@@ -1,96 +1,69 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import Wrapper from "./Wrapper";
 const Footer = () => {
   return (
-    <footer className="   bg-black text-white pt-14 ">
-      <Wrapper className="flex justify-between flex-col md:flex-row gap-[50px] md:gap-0">
-        {/* LEFT START */}
-        <div className="flex gap-[50px] md:gap-[75px] lg:gap-[100px] flex-col md:flex-row">
-          {/* MENU START */}
-          <div className="flex flex-col gap-3 shrink-0">
-            <div className="font-oswald font-medium uppercase text-sm cursor-pointer">
-              Find a store
-            </div>
-            <div className="font-oswald font-medium uppercase text-sm cursor-pointer">
-              become a partner
-            </div>
-            <div className="font-oswald font-medium uppercase text-sm cursor-pointer">
-              sign up for email
-            </div>
-            <div className="font-oswald font-medium uppercase text-sm cursor-pointer">
-              send us feedback
-            </div>
-          </div>
-          {/* MENU END */}
+    <div>
+      <Wrapper>
+        <section className=" h-72 ">
+          <div className="max-w-screen-xl px-4 h-72 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
+            <nav className="flex flex-wrap justify-center -mx-5 -my-2">
+              <div className="px-5 py-2">
+                <Link
+                  to="/"
+                  className="text-base leading-6 text-gray-500 hover:text-gray-900"
+                >
+                  Home
+                </Link>
+              </div>
+              <div className="px-5 py-2">
+                <Link
+                  to="my-orders"
+                  className="text-base leading-6 text-gray-500 hover:text-gray-900"
+                >
+                  Order
+                </Link>
+              </div>
 
-          {/* NORMAL MENU START */}
-          <div className="flex gap-[50px] md:gap-[75px] lg:gap-[100px] shrink-0">
-            {/* MENU START */}
-            <div className="flex flex-col gap-3">
-              <div className="font-oswald font-medium uppercase text-sm">
-                get help
+              <div className="px-5 py-2">
+                <Link
+                  to="/about"
+                  className="text-base leading-6 text-gray-500 hover:text-gray-900"
+                >
+                  About
+                </Link>
               </div>
-              <div className="text-sm text-white/[0.5] hover:text-white cursor-pointer">
-                Order Status
+              <div className="px-5 py-2">
+                <Link
+                  to="/contact"
+                  className="text-base leading-6 text-gray-500 hover:text-gray-900"
+                >
+                  Contact
+                </Link>
               </div>
-              <div className="text-sm text-white/[0.5] hover:text-white cursor-pointer">
-                Delivery
-              </div>
-              <div className="text-sm text-white/[0.5] hover:text-white cursor-pointer">
-                Returns
-              </div>
-              <div className="text-sm text-white/[0.5] hover:text-white cursor-pointer">
-                Payment Options
-              </div>
-              <div className="text-sm text-white/[0.5] hover:text-white cursor-pointer">
-                Contact Us
-              </div>
+            </nav>
+            <div className="flex justify-center mt-8 space-x-6">
+              <Link href="#" className="text-gray-400 hover:text-gray-500">
+                <span className="sr-only">Facebook</span>
+                <FaFacebookF />
+              </Link>
+              <Link href="#" className="text-gray-400 hover:text-gray-500">
+                <span className="sr-only">Instagram</span>
+                <FaInstagram />
+              </Link>
+              <Link href="#" className="text-gray-400 hover:text-gray-500">
+                <span className="sr-only">Twitter</span>
+                <FaTwitter />
+              </Link>
             </div>
-            {/* MENU END */}
+            <p className="mt-8 text-base leading-6 text-center text-gray-400">
+              © 2023 Incentric India, Inc. All rights reserved.
+            </p>
           </div>
-          {/* NORMAL MENU END */}
-        </div>
-        {/* LEFT END */}
-
-        {/* RIGHT START */}
-        <div className="flex gap-4 justify-center md:justify-start">
-          <div
-            onClick={() => window.open("https://facebook.com", "_blank")}
-            className="w-10 h-10 hover:bg-[#353839] border  rounded-full  flex items-center justify-center  cursor-pointer"
-          >
-            <FaFacebookF size={20} />
-          </div>
-          <Link
-            href="https://twitter.com"
-            className="w-10 h-10 rounded-full  border hover:bg-[#353839]  flex items-center justify-center   cursor-pointer"
-          >
-            <FaTwitter size={20} />
-          </Link>
-          <div className="w-10 h-10 rounded-full border hover:bg-[#353839]  flex items-center justify-center   cursor-pointer">
-            <FaYoutube size={20} />
-          </div>
-          <div className="w-10 h-10 rounded-full border hover:bg-[#353839]  flex items-center justify-center   cursor-pointer">
-            <FaInstagram size={20} className="" />
-          </div>
-        </div>
-        {/* RIGHT END */}
+        </section>
       </Wrapper>
-      <Wrapper className="flex justify-between mt-10 flex-col md:flex-row gap-[10px] md:gap-0">
-        {/* LEFT START */}
-        <div className="text-[12px] text-white/[0.5] hover:text-white cursor-pointer text-center md:text-left">
-          © 2023 Ecentric India, Inc. All Rights Reserved
-        </div>
-        {/* LEFT END */}
-
-        {/* RIGHT START */}
-        <div className="flex gap-2 text-white/[0.5] md:gap-5 text-center md:text-left flex-wrap justify-center">
-          💛
-        </div>
-        {/* RIGHT END */}
-      </Wrapper>
-    </footer>
+    </div>
   );
 };
 

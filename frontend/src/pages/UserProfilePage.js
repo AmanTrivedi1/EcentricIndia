@@ -1,11 +1,11 @@
 import Footer from "../features/common/Footer";
-import NavBar from "../features/navbar/Navbar";
-import UserProfile from "../features/user/components/UserProfile";
 
+import UserProfile from "../features/user/components/UserProfile";
+import NewNavbar from "../features/navbar/NewNavbar";
 function UserProfilePage() {
   return (
     <div>
-      <NavBar />
+      <NewNavbar />
       <UserProfile />
     </div>
   );

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPasswordRequestAsync, selectMailSent } from "../authSlice";
+
 import TypewriterComponent from "typewriter-effect";
 export default function ForgotPassword() {
   const mailSent = useSelector(selectMailSent);

@@ -1,11 +1,10 @@
-import NavBar from "../features/navbar/Navbar";
 import ProductDetail from "../features/product/components/ProductDetail";
 import Footer from "../features/common/Footer";
-
+import NewNavbar from "../features/navbar/NewNavbar";
 function ProductDetailPage() {
   return (
     <div>
-      <NavBar />
+      <NewNavbar />
       <ProductDetail />
       <Footer />
     </div>

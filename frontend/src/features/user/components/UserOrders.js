@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Product from "../../../components/Product";
 import { MdOutlineEditNote } from "react-icons/md";
+
 import {
   fetchLoggedInUserOrderAsync,
-  selectUserInfo,
   selectUserInfoStatus,
   selectUserOrders,
 } from "../userSlice";
@@ -12,7 +12,6 @@ export default function UserOrders() {
   const dispatch = useDispatch();
   const orders = useSelector(selectUserOrders);
   const status = useSelector(selectUserInfoStatus);
-
 
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync());
@@ -64,7 +63,10 @@ export default function UserOrders() {
                                       </p>
                                     ) : (
                                       <p className="ml-4">
-                                        ${item.product.discountPrice[1].toFixed(2)}
+                                        $
+                                        {item.product.discountPrice[1].toFixed(
+                                          2
+                                        )}
                                       </p>
                                     )}
                                   </div>

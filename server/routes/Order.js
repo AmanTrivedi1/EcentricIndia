@@ -5,6 +5,7 @@ const {
   deleteOrder,
   updateOrder,
   fetchAllOrders,
+  createTrackingLink,
 } = require("../controller/Order");
 
 const router = express.Router();
@@ -14,6 +15,6 @@ router
   .get("/own/", fetchOrdersByUser)
   .delete("/:id", deleteOrder)
   .patch("/:id", updateOrder)
-  .get("/", fetchAllOrders);
-
+  .get("/", fetchAllOrders)
+  .put("/trackinglink/:id", createTrackingLink);
 exports.router = router;

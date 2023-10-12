@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectError, selectLoggedInUser } from "../authSlice";
 import { Link, Navigate } from "react-router-dom";
 import { loginUserAsync } from "../authSlice";
+
 import TypewriterComponent from "typewriter-effect";
 import { useForm } from "react-hook-form";
 
@@ -18,6 +19,7 @@ export default function Login() {
   return (
     <>
       {user && <Navigate to="/" replace={true}></Navigate>}
+    
       <div className="flex h-screen items-center justify-center">
         <div className=" border p-10 rounded-xl border-black/10  sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className=" text-2xl font-bold font-Poppins sm:block  text-black  leading-normal text-center mb-6 ">
@@ -120,6 +122,7 @@ export default function Login() {
           </p>
         </div>
       </div>
+      
     </>
   );
 }

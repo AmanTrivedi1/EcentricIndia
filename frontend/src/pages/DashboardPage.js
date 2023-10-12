@@ -1,11 +1,12 @@
 import React from "react";
 import Dashboard from "../features/dashboard/Dashboard";
-import NavBar from "../features/navbar/Navbar";
+
 import Footer from "../features/common/Footer";
+import NewNavbar from "../features/navbar/NewNavbar";
 const DashboardPage = () => {
   return (
     <>
-      <NavBar />
+      <NewNavbar />
       <Dashboard />
       <Footer />
     </>

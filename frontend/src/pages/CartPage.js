@@ -1,12 +1,10 @@
 import Cart from "../features/cart/Cart";
-import Footer from "../features/common/Footer";
-import NavBar from "../features/navbar/Navbar";
+import NewNavbar from "../features/navbar/NewNavbar";
 function CartPage() {
   return (
     <div>
-      <NavBar />
+      <NewNavbar />
       <Cart />
-      {/* <Footer /> */}
     </div>
   );
 }

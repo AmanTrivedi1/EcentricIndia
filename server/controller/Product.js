@@ -1,15 +1,18 @@
 const { Product } = require("../model/Product");
 const { Brand } = require("../model/Brand");
 const { Category } = require("../model/Category");
-const CC = require('currency-converter-lt')
+const { User } = require("../model/User");
+const CC = require("currency-converter-lt");
 
 exports.createProduct = async (req, res) => {
-  let currencyConverter = new CC({from:"INR", to:"USD"});
+  let currencyConverter = new CC({ from: "INR", to: "USD" });
   const product = new Product(req.body);
-  const USDprice = await currencyConverter.convert(req.body.price).then((response) => {
-    return response;
-  })
-  
+  const USDprice = await currencyConverter
+    .convert(req.body.price)
+    .then((response) => {
+      return response;
+    });
+
   product.USDprice = USDprice;
   const brandCheck = await Brand.find({ value: req.body.brand }).exec();
   const categoryCheck = await Category.find({
@@ -33,12 +36,12 @@ exports.createProduct = async (req, res) => {
   product.discountPrice.push(
     product.USDprice * (1 - product.discountPercentage / 100).toFixed(2)
   );
-  console.log("kjk",product)
+  console.log("kjk", product);
   try {
     const doc = await product.save();
     res.status(201).json(doc);
   } catch (err) {
-    console.log("sfs",err)
+    console.log("sfs", err);
     res.status(400).json(err);
   }
 };
@@ -121,7 +124,7 @@ exports.fetchProductById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    let currencyConverter = new CC({from:"INR", to:"USD"});
+    let currencyConverter = new CC({ from: "INR", to: "USD" });
     const product = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -131,9 +134,11 @@ exports.updateProduct = async (req, res) => {
       value: req.body.category,
     }).exec();
     let brand, category;
-    const USDprice = await currencyConverter.convert(req.body.price).then((response) => {
-      return response;
-    })    
+    const USDprice = await currencyConverter
+      .convert(req.body.price)
+      .then((response) => {
+        return response;
+      });
     product.USDprice = USDprice;
     if (brandCheck.length === 0) {
       brand = new Brand({ label: req.body.brand, value: req.body.brand });
@@ -149,14 +154,14 @@ exports.updateProduct = async (req, res) => {
     product.discountPrice = [];
     product.discountPrice.push(
       Math.round(product.price * (1 - product.discountPercentage / 100))
-      );
-      product.discountPrice.push(
-        product.USDprice * (1 - product.discountPercentage / 100).toFixed(2)
-        );
-        const updatedProduct = await product.save();
+    );
+    product.discountPrice.push(
+      product.USDprice * (1 - product.discountPercentage / 100).toFixed(2)
+    );
+    const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400).json(err);
   }
 };
@@ -164,20 +169,21 @@ exports.updateProduct = async (req, res) => {
 // Create New Reviews or update the reviews
 
 exports.createProductReview = async (req, res) => {
-  const { rating, comment, productId, userId } = req.body;
+  const { rating, comment, productId, userId, name } = req.body;
   const review = {
     user: userId,
-    name: "Name",
+    name: name,
     rating: Number(rating),
     comment,
   };
   const product = await Product.findById(productId);
-  const isReviewed = product.reviews.find(
-    (rev) => rev.user.toString() === req.user._id.toString()
+  const user = await User.findById(review.user);
+  const isReviewed = product?.reviews.find(
+    (rev) => rev.user.toString() === review.user.toString()
   );
   if (isReviewed) {
     product.reviews.forEach((rev) => {
-      if (rev.user.toString() === req.user._id.toString())
+      if (rev.user.toString() === review.user.toString())
         (rev.rating = rating), (rev.comment = comment);
     });
   } else {
@@ -191,40 +197,93 @@ exports.createProductReview = async (req, res) => {
   product.ratings = avg / product.reviews.length;
   await product.save({ validateBeforeSave: false });
   res.status(200).json({
-    success: true,
+    ratings: product.ratings,
+    numOfReviews: product.reviews.length,
+    reviews: product.reviews,
   });
 };
+
+exports.editProductReview = async (req, res) => {
+  const { rating, comment, productId, userId, name } = req.body;
+  const review = {
+    user: userId,
+    name: name,
+    rating: Number(rating),
+    comment,
+  };
+  console.log("review mera dost", review);
+  const product = await Product.findById(productId);
+  const user = await User.findById(review.user);
+  const isReviewed = product?.reviews.find(
+    (rev) => rev.user.toString() === review.user.toString()
+  );
+  if (isReviewed) {
+    product.reviews.forEach((rev) => {
+      if (rev.user.toString() === review.user.toString())
+        (rev.rating = rating), (rev.comment = comment);
+    });
+  }
+  let singleReview;
+  product.reviews.forEach((rev) => {
+    if (rev.user.toString() === review.user.toString()) {
+      singleReview = rev;
+    }
+  });
+  let avg = 0;
+  product.reviews.forEach((rev) => {
+    avg += rev.rating;
+  });
+  product.ratings = avg / product.reviews.length;
+  await product.save({ validateBeforeSave: false });
+  res.status(200).json({
+    ratings: product.ratings,
+    numOfReviews: product.reviews.length,
+    reviews: singleReview,
+  });
+};
+
 // This will get all the reviews
 exports.getProductReviews = async (req, res, next) => {
-  const product = await Product.findById(req.query.id);
+  const product = await Product.findById(req.params.prodId);
   if (!product) {
     return next(new Error("Product not found", 404));
   }
   res.status(200).json({
-    success: true,
+    ratings: product.ratings,
+    numOfReviews: product.numOfReviews,
     reviews: product.reviews,
   });
 };
 //  Access to delete the reviews
 exports.deleteReviews = async (req, res, next) => {
-  const product = await Product.findById(req.query.productId);
+  const { prodId, reviewId } = req.params;
+  const product = await Product.findById(prodId);
   if (!product) {
     return next(new Error("Product not found", 404));
   }
   // Ye Filter Karega jo delete nhi karne h
   const reviews = product.reviews.filter(
-    (rev) => rev._id.toString() !== req.query.id
+    (rev) => rev._id.toString() !== reviewId
   );
 
+  // const deletedReview = product.reviews.filter(
+  //   (rev) => rev._id.toString() === reviewId
+  // );
+
   let avg = 0;
+  let numOfReviews = 0;
+  let ratings = 0;
   reviews.forEach((rev) => {
     avg += rev.rating;
   });
-  const ratings = avg / reviews.length;
-
-  const numOfReviews = reviews.length;
+  if (reviews.length > 0) {
+    ratings = avg / reviews.length;
+    numOfReviews = reviews.length;
+  }
+  // const ratings = avg / reviews.length;
+  // const numOfReviews = reviews.length;
   await Product.findByIdAndUpdate(
-    req.query.productId,
+    prodId,
     {
       reviews,
       ratings,
@@ -238,7 +297,8 @@ exports.deleteReviews = async (req, res, next) => {
   );
 
   res.status(200).json({
-    success: true,
-    reviews: product.reviews,
+    ratings: ratings,
+    numOfReviews: numOfReviews,
+    reviews: reviews,
   });
 };

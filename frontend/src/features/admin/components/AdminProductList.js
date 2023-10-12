@@ -25,6 +25,7 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
+import Star from "../../../components/Star";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
@@ -502,7 +503,7 @@ function ProductGrid({ products }) {
                         </div>
                       </h3>
                       <p className="mt-1 text-sm text-gray-500">
-                        <StarIcon className="w-6 h-6 inline"></StarIcon>
+                        <Star reviews={product?.ratings} />
                         <span className=" align-bottom">{product.rating}</span>
                       </p>
                     </div>
@@ -532,7 +533,7 @@ function ProductGrid({ products }) {
                   to={`/admin/product-form/edit/${product.id}`}
                   className="rounded-md  px-3 py-2 text-sm border text-black/70 hover:text-black hover:border-black font-semibold  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  focus-visible:outline-black/40"
                 >
-                  Edit individually
+                  Edit Product
                 </Link>
               </div>
             </div>

@@ -9,12 +9,14 @@ import {
   selectProductListStatus,
   selectTotalItems,
 } from "../productSlice";
+
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { useCurrency } from "../../../context/CurrencyContext";
 import { ITEMS_PER_PAGE } from "../../../app/constants";
 import Pagination from "../../common/Pagination";
+import Star from "../../../components/Star";
 
 export default function Product() {
   const { selectedCurrency } = useCurrency();
@@ -45,11 +47,11 @@ export default function Product() {
   }, []);
 
   return (
-    <div className="">
+    <div className="bg-accent">
       <div>
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="  pb-6 pt-24">
-            <h1 className="text-4xl font-bold text-center  ">All Products</h1>
+          <div className="  pb-6 pt-10">
+            <h1 className="text-4xl font-bold text-center">All Products</h1>
           </div>
 
           <section aria-labelledby="products-heading" className="">
@@ -76,14 +78,14 @@ export default function Product() {
 function ProductGrid({ products, status }) {
   const { selectedCurrency } = useCurrency();
   return (
-    <div className="min-h-[300px]" id="Products">
+    <div className="min-h-[300px]  bg-accent    " id="Products">
       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {status === "loading" ? <Loader /> : null}
           {products.map((product) => (
             <Link to={`/product-detail/${product.id}`} key={product.id}>
               <div className="group relative  p-2 ">
-                <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-xl bg-gray-200 lg:aspect-none  lg:h-60">
+                <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-xl  lg:aspect-none  lg:h-60">
                   <img
                     src={product.thumbnail}
                     alt={product.title}
@@ -102,7 +104,7 @@ function ProductGrid({ products, status }) {
                       </div>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      <StarIcon className="w-6 h-6 inline"></StarIcon>
+                      <Star reviews={product?.ratings} />
                       <span className=" align-bottom">{product.rating}</span>
                     </p>
                   </div>

@@ -7,7 +7,6 @@ exports.fetchOrdersByUser = async (req, res) => {
   const { id } = req.user;
   try {
     const orders = await Order.find({ user: id });
-
     res.status(200).json(orders);
   } catch (err) {
     res.status(400).json(err);
@@ -88,5 +87,24 @@ exports.fetchAllOrders = async (req, res) => {
     res.status(200).json(docs);
   } catch (err) {
     res.status(400).json(err);
+  }
+};
+
+exports.createTrackingLink = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { trackingLink } = req.body;
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { trackingLink },
+      { new: true }
+    );
+    if (!order) {
+      return res.status(404).json({ error: " Order nhi mil rha h bhai " });
+    }
+    return res.json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
