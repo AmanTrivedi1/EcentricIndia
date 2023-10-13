@@ -18,6 +18,7 @@ import Pagination from "../../common/Pagination";
 function AdminOrders() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const orders = useSelector(selectOrders);
   const totalOrders = useSelector(selectTotalOrders);
   const [editableOrderId, setEditableOrderId] = useState(-1);
@@ -26,9 +27,13 @@ function AdminOrders() {
 
   const [trackingLink, setTrackingLink] = useState("");
 
+  const toggleInput = () => {
+    setIsOpen(!isOpen);
+  };
+
   const handleEdit = (order) => {
     setEditableOrderId(order.id);
-    setOrder(order);
+    setOrder(order.id);
     console.log("Idhar dekho yha se mil rha h bhai ", order.id);
   };
   const handleShow = () => {
@@ -80,7 +85,7 @@ function AdminOrders() {
 
   const handleUpdateTrackingLink = async () => {
     try {
-      const response = await fetch(`/orders/trackinglink/${order.id}`, {
+      const response = await fetch(`/orders/trackinglink/${order}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -105,13 +110,25 @@ function AdminOrders() {
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Enter Tracking Link"
-        value={trackingLink}
-        onChange={handleTrackingLinkChange}
-      />
-      <button onClick={handleUpdateTrackingLink}>Update Tracking Link</button>
+      <div className="overflow-x-auto px-10 rounded-md overflow-auto ">
+        <>
+          <div className="flex items-center justify-start">
+            <input
+              className="rounded-lg"
+              type="text"
+              placeholder="Enter Tracking Link"
+              value={trackingLink}
+              onChange={handleTrackingLinkChange}
+            />
+            <button
+              className="btn px-4  ml-4  sm:text-lg text-xs "
+              onClick={handleUpdateTrackingLink}
+            >
+              Save
+            </button>
+          </div>
+        </>
+      </div>
       <div className="overflow-x-auto px-10 rounded-md overflow-auto mt-10">
         <div className="bg-gray-100  flex items-center justify-center font-sans overflow-hidden">
           <div className="w-full">
@@ -310,7 +327,7 @@ function AdminOrders() {
                           <div className="w-6 mr-4 transform hover:text-purple-500 hover:scale-120">
                             <EyeIcon
                               className="w-8 h-8"
-                              onClick={(e) => handleShow(order)}
+                              onClick={toggleInput}
                             ></EyeIcon>
                           </div>
                           <div className="w-6 mr-2 transform hover:text-purple-500 hover:scale-120">

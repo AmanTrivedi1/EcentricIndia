@@ -94,6 +94,7 @@ exports.createTrackingLink = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { trackingLink } = req.body;
+    console.log(orderId);
     const order = await Order.findByIdAndUpdate(
       orderId,
       { trackingLink },

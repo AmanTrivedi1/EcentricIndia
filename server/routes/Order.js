@@ -16,5 +16,5 @@ router
   .delete("/:id", deleteOrder)
   .patch("/:id", updateOrder)
   .get("/", fetchAllOrders)
-  .put("/trackinglink/:id", createTrackingLink);
+  .put("/trackinglink/:orderId", createTrackingLink);
 exports.router = router;
