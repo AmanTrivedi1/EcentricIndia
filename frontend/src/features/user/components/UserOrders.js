@@ -13,6 +13,7 @@ export default function UserOrders() {
   const orders = useSelector(selectUserOrders);
   const status = useSelector(selectUserInfoStatus);
 
+  console.log(orders);
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync());
   }, [dispatch]);
@@ -37,6 +38,17 @@ export default function UserOrders() {
                       <h3 className="text-xl my-5 font-semibold tracking-tight text-gray-600">
                         Order Status :{" "}
                         <span className="text-black">{order.status}</span>
+                      </h3>
+                      <h3 className="text-xl  flex items-center  justify-start gap-x-2  my-5 font-semibold tracking-tight text-gray-600">
+                        Tracking Id:
+                        <a
+                          className="font-medium text-blue-600 text-sm dark:text-blue-500 hover:underline"
+                          href={order.trackingLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {order.trackingLink}
+                        </a>
                       </h3>
                       <div className="flow-root">
                         <ul className="-my-6 divide-y divide-gray-200">
