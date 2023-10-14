@@ -60,7 +60,7 @@ export default function NewNavbar() {
                   variants={sentence}
                   initial="hidden"
                   animate="visible"
-                  className="text-base text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block"
+                  className="text-xl text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block"
                 >
                   {line1.split("").map((char, index) => {
                     return (
@@ -370,9 +370,16 @@ export default function NewNavbar() {
         <nav>
           <div className="py-4 px-6 w-full flex xl:hidden justify-between items-center bg-accent fixed top-0 z-40">
             <div className="w-40">
-              <h1>Ecentric India</h1>
+              <Link to="/">
+                {" "}
+                <h1 className="font-bold text-xl">Ecentric India</h1>
+              </Link>
             </div>
-            <div>
+            <div className="flex items-center gap-x-4 justify-center">
+              <AiOutlineSearch
+                onClick={handleClick}
+                className="w-5 h-5 cursor-pointer"
+              />
               <div
                 id="menu"
                 className="text-primary"

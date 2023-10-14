@@ -44,8 +44,8 @@ export default function UserOrders() {
                         <a
                           className="font-medium text-blue-600 text-sm dark:text-blue-500 hover:underline"
                           href={order.trackingLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      
+                         
                         >
                           {order.trackingLink}
                         </a>

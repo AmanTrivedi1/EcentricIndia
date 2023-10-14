@@ -118,7 +118,7 @@ export default function ProductList({ searchData }) {
   }, []);
 
   return (
-    <div className=" h-screen">
+    <div className="h-full ">
       <div>
         <MobileFilter
           handleFilter={handleFilter}
@@ -127,7 +127,9 @@ export default function ProductList({ searchData }) {
           filters={filters}
         ></MobileFilter>
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-7xl   pt-20 px-4 sm:px-6 lg:px-8">
+          <h1 className="md:text-2xl font-bold text-xl ">All Products</h1>
+
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
             <div className="flex items-center">
               <Menu as="div" className="relative inline-block text-left">
@@ -150,7 +152,7 @@ export default function ProductList({ searchData }) {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute right-0 left-10 z-10 mt-2 w-40 origin-top-right rounded-md  shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="absolute right-0 left-10  bg-accent  z-10 mt-2 w-40 origin-top-right rounded-md  shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1 cursor-pointer">
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
@@ -252,7 +254,7 @@ function MobileFilter({
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >
-            <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto  py-4 pb-12 shadow-xl">
+            <Dialog.Panel className="relative ml-auto flex h-full  bg-accent w-full max-w-xs flex-col overflow-y-auto  py-4 pb-12 shadow-xl">
               <div className="flex items-center justify-between px-4">
                 <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                 <button
@@ -364,7 +366,7 @@ function DesktopFilter({ handleFilter, filters }) {
               <Disclosure.Panel className="pt-6">
                 <div className="space-y-4">
                   {section.options.map((option, optionIdx) => (
-                    <div key={option.value} className="flex items-center">
+                    <div key={option.value} className="flex  items-center">
                       <input
                         id={`filter-${section.id}-${optionIdx}`}
                         name={`${section.id}[]`}

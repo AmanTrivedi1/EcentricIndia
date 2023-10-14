@@ -14,8 +14,6 @@ import { selectItems } from "../cart/cartSlice";
 import { CgProfile } from "react-icons/cg";
 import { selectLoggedInUser } from "../auth/authSlice";
 
-import Wrapper from "../common/Wrapper";
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -45,7 +43,7 @@ function Filter(props) {
           <div className="container px-6 justify-between h-16  flex items-center lg:items-stretch mx-auto">
             <div className="h-full flex items-center">
               <div className="mr-10 flex items-center">
-                <h3 className="text-base text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block">
+                <h3 className="text-xl text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block">
                   Ecentric India
                 </h3>
               </div>
@@ -332,10 +330,16 @@ function Filter(props) {
         <nav>
           <div className="py-4 px-6 w-full flex xl:hidden justify-between  items-center bg-accent fixed top-0 z-40">
             <div className="sm:hidden  text-2xl font-bold">
-              <h1>Ec</h1>
+              <Link to="/">
+                {" "}
+                <h1>Ec</h1>
+              </Link>
             </div>
             <div className="w-60 hidden font-bold text-xl sm:block ">
-              <h1>Ecentric India</h1>
+              <Link to="/">
+                {" "}
+                <h1>Ecentric India</h1>
+              </Link>
             </div>
             <div className="relative ml-2 mr-2 w-full sm:w-60 ">
               <div className="text-primary absolute ml-3 inset-0 m-auto w-4 h-4">
@@ -368,7 +372,7 @@ function Filter(props) {
           <div
             className={
               show
-                ? "absolute xl:hidden w-full h-full transform -translate-x-0 z-40"
+                ? "fixed xl:hidden w-full h-full transform -translate-x-0 z-40"
                 : "absolute xl:hidden w-full h-full transform -translate-x-full z-40"
             }
             id="mobile-nav"
@@ -384,9 +388,11 @@ function Filter(props) {
                     <div className="mt-6 flex w-full items-center justify-between">
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center">
-                          <p className="text-base cursor-pointer  text-primary ml-3">
-                            Ecentric India
-                          </p>
+                          <Link to="/">
+                            <h1 className="text-xl font-bold cursor-pointer  text-primary ml-3">
+                              Ecentric India
+                            </h1>
+                          </Link>
                         </div>
                         <div
                           id="cross"
@@ -436,7 +442,7 @@ function Filter(props) {
                       </Link>
 
                       <Link to="/cart" className="cursor-pointer">
-                        <li className="text-white pt-5">
+                        <li className="text-white pt-5 ">
                           <div className="flex items-center">
                             <p className="text-primary xl:text-base text-base ml-3">
                               Cart
@@ -498,7 +504,7 @@ function Filter(props) {
                       ) : (
                         <>
                           <Link to="/login">
-                            <li className="cursor-pointer text-primary text-base leading-3 tracking-normal px-1 py-1  focus:text-black focus:outline-none flex items-center">
+                            <li className="cursor-pointer mt-10 text-primary text-base leading-3 tracking-normal px-1 py-1  focus:text-black focus:outline-none flex items-center">
                               <span className="ml-2">Login</span>
                             </li>
                           </Link>

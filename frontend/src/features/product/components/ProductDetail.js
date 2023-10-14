@@ -51,8 +51,7 @@ export default function ProductDetail() {
   const allComments = useSelector(selectAllComments);
   const totalRating = useSelector(allCommentsRatings);
   const numberofReviews = useSelector(allCommentsNumber);
-  console.log("terer maa ki ", allComments);
-  // setCommentL(allComments);
+
   const dispatch = useDispatch();
   const params = useParams();
   const alert = useAlert();
@@ -393,7 +392,7 @@ export default function ProductDetail() {
       ) : null}
 
       <div className="py-10 bg-accent mb-10 ">
-        <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+        <div className="mx-auto max-w-2xl px-4 py-0  sm:py-0 lg:max-w-7xl ">
           <div className="mt-6 grid  gap-x-6 gap-y-10 grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
             {status === "loading" ? <></> : null}
             {similarCategory?.map((product) => (
