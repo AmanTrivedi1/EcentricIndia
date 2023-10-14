@@ -42,7 +42,7 @@ function Filter(props) {
       <div className="bg-accent text-primary h-full w-full">
         {/* Code block starts */}
         <nav className="w-full mx-auto hidden xl:block  ">
-          <div className="container px-6 justify-between h-16 flex items-center lg:items-stretch mx-auto">
+          <div className="container px-6 justify-between h-16  flex items-center lg:items-stretch mx-auto">
             <div className="h-full flex items-center">
               <div className="mr-10 flex items-center">
                 <h3 className="text-base text-primary font-bold tracking-normal leading-tight ml-3 hidden lg:block">
@@ -327,8 +327,17 @@ function Filter(props) {
               </ul>
             </div>
           </div>
-          <div className="w-full sm:hidden   pr-12 h-full flex items-center border-gray-700 ">
-            <div className="relative w-full">
+        </nav>
+        {/* Navbar */}
+        <nav>
+          <div className="py-4 px-6 w-full flex xl:hidden justify-between  items-center bg-accent fixed top-0 z-40">
+            <div className="sm:hidden  text-2xl font-bold">
+              <h1>Ec</h1>
+            </div>
+            <div className="w-60 hidden font-bold text-xl sm:block ">
+              <h1>Ecentric India</h1>
+            </div>
+            <div className="relative ml-2 mr-2 w-full sm:w-60 ">
               <div className="text-primary absolute ml-3 inset-0 m-auto w-4 h-4">
                 <AiOutlineSearch className="w-4 h-4" />
               </div>
@@ -339,14 +348,6 @@ function Filter(props) {
                 onChange={handleSearch}
                 className="bg-[#F2F2F2] h-10 border border-gray-300 text-black text-sm rounded-lg focus:ring-black/40 focus:border-black  w-full pl-10 p-2.5 "
               />
-            </div>
-          </div>
-        </nav>
-        {/* Navbar */}
-        <nav>
-          <div className="py-4 px-6 w-full flex xl:hidden justify-between items-center bg-accent fixed top-0 z-40">
-            <div className="w-40">
-              <h1>Ecentric India</h1>
             </div>
             <div>
               <div
@@ -362,6 +363,7 @@ function Filter(props) {
               </div>
             </div>
           </div>
+
           {/*Mobile responsive sidebar*/}
           <div
             className={

@@ -95,7 +95,7 @@ function ProductForm() {
                 product.highlight3,
                 product.highlight4,
               ];
-              
+
               product.rating = 0;
               delete product["image1"];
               delete product["image2"];
@@ -121,7 +121,7 @@ function ProductForm() {
               }
             })}
           >
-            <div className=" ">
+            <div className=" pb-8 ">
               <div className="border-b border-gray-900/10">
                 <div className=" grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-8">
                   {selectedProduct && selectedProduct.deleted && (
@@ -469,7 +469,7 @@ function ProductForm() {
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-x-6">
+            <div className="mt-6  pb-8 flex items-center justify-end gap-x-6">
               <button
                 type="button"
                 className="rounded-md w-full bg-red-500 px-3 opacity-100 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red/40"

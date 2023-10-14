@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { AiFillStar } from "react-icons/ai";
 import Star from "../../../components/Star";
 import ReadMoreReact from "read-more-react";
 import { useCurrency } from "../../../context/CurrencyContext";

@@ -13,6 +13,7 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from "@heroicons/react/24/outline";
+import { useAlert } from "react-alert";
 import Pagination from "../../common/Pagination";
 
 function AdminOrders() {
@@ -24,7 +25,7 @@ function AdminOrders() {
   const [editableOrderId, setEditableOrderId] = useState(-1);
   const [sort, setSort] = useState({});
   const [order, setOrder] = useState(null);
-
+  const alert = useAlert();
   const [trackingLink, setTrackingLink] = useState("");
 
   const toggleInput = () => {
@@ -95,8 +96,9 @@ function AdminOrders() {
 
       if (response.ok) {
         console.log("Tracking link updated successfully");
+        alert.info("Your Link Saved Successfully");
       } else {
-        console.error("Error updating tracking link");
+        alert.error("Please Click on Specific Order");
       }
     } catch (error) {
       console.error("Error:", error);
