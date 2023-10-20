@@ -3,12 +3,10 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
 import CheckoutForm from "./CheckoutForm";
-import "../Stripe.css";
+
 import { selectCurrentOrder } from "../features/order/orderSlice";
 import { useCurrency } from "../context/CurrencyContext";
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
+
 const stripePromise = loadStripe(
   "pk_test_51LO0nNSBfCKAZDAkKq9TINx0QylNNPZB2VuFPQwLPnlRudxwz0x0PPTAl3I3SVjp6479PpXtgkTswBseoBwm8MWk002drvO5f4"
 );

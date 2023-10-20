@@ -96,12 +96,12 @@ function AdminOrders() {
 
       if (response.ok) {
         console.log("Tracking link updated successfully");
-        alert.info("Your Link Saved Successfully");
+        alert.success("Your Link Saved Successfully");
       } else {
-        alert.error("Please Click on Specific Order");
+        alert.info("Please Click on Specific Order (Action)");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Seems Like Error Accured", error);
     }
   };
 
